@@ -24,6 +24,7 @@ export class RestaurantController {
             console.log("11")
             const service = new RestaurantService();
             const resultItem = await service.getRestaurantById(req.params.id);
+            // const resultItem = await service.getRestaurantById(req.params.id);
             res.status(200).json(resultItem);
         }
         catch (ex) {
@@ -39,8 +40,8 @@ export class RestaurantController {
             console.log("addrestaurant")
             const service = new RestaurantService();
             const resultItem = await service.addRestaurant(req.body);
-            const restaurantObject = { "RestaurantId": resultItem.insertId, "Name": req.body.Restaurantname, "Address":req.body.Address
-            , "phoneNumber":req.body.PhoneNumber, "ImageUrl":req.body.ImageUrl }
+            const restaurantObject = { "RestaurantID": resultItem.insertId, "Name": req.body.Name, "Address": req.body.Address, "PhoneNumber":req.body.PhoneNumber
+            , "ImageURL":req.body.ImageURL }
              console.log(restaurantObject)
              //לשנות את הצורה בה הכנסנו סיסמה!!
             //  console.log("body",req.body)

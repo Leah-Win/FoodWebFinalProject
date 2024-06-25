@@ -6,6 +6,7 @@ export class RestaurantService {
     constructor(_tableName, _param=null) {
         this.tableName = "Restaurants ";
         this.param = _param;
+        this.idName="RestaurantID";
     }
 
     async getAllRestaurants() {
@@ -15,7 +16,8 @@ export class RestaurantService {
     }
 
     async getRestaurantById(id) {
-        const query = getByIdQuery(this.tableName);
+        console.log("hi");
+        const query = getByIdQuery(this.tableName,this.idName);
         const result = await executeQuery(query, [id]);
         return result;
     }
@@ -26,18 +28,20 @@ export class RestaurantService {
     //     return result;
     // }
 
-    async checkIfRestaurantExist(Item) {
-        const query = checkPasswordQuery("Passwords");
-        Item = Object.values(Item);
-        console.log("lolololololo" , Item[1])
-        const result = await executeQuery(query, [Item[1]]);
-        return result[0]["COUNT(*)"];
-    }
+    // async checkIfRestaurantExist(Item) {
+    //     const query = checkPasswordQuery("Passwords");
+    //     Item = Object.values(Item);
+    //     console.log("lolololololo" , Item[1])
+    //     const result = await executeQuery(query, [Item[1]]);
+    //     return result[0]["COUNT(*)"];
+    // }
 
-    async addRestaurant(Item) {
-        const query = postQuery(this.tableName);
-        Item = Object.values(Item);
-        const result = await executeQuery(query, Item);
+    async addRestaurant(restaurant) {
+        console.log("ooooooooooooooooo");
+        const restaurantKeys = Object.keys(restaurant);
+        const restauranValues = Object.values(restaurant);
+        const query = postQuery(this.tableName,restaurantKeys);
+        const result = await executeQuery(query, restauranValues);
         return result;
     }
 

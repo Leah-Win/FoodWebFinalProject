@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 // import { UserContext } from '
 import { UserContext } from './UserProvider'
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+// import { DataTable } from 'primereact/datatable';
+// import { Column } from 'primereact/column';
 
 function Restaurant() {
 
@@ -41,8 +41,8 @@ function Restaurant() {
         getData();
     }, []);
     
-    const [restaurants, setRestaurants] = useState([]);
-    // const [currentRestaurant, setCurrentRestaurant] = useState([]);
+    // const [restaurants, setRestaurants] = useState([]);
+    const [currentRestaurant, setCurrentRestaurant] = useState([]);
     
     useEffect(() => {
     }, [restaurants]);
@@ -81,11 +81,6 @@ const  addRestaurant=()=>{
       })
 }
 
-        const columns = Object.keys(restaurants[0] || {}).map(key => ({
-            field: key,
-            header: key.charAt(0).toUpperCase() + key.slice(1)
-        }));
-
     return (
         <>
             {/* <h1>{user.username}</h1> */}
@@ -98,11 +93,11 @@ const  addRestaurant=()=>{
     <Column field="phoneNamber" header="PhoneNamber"></Column>
     <Column field="imageUrl" header="ImageUrl"></Column>
 </DataTable> */}
-<DataTable value={restaurants} tableStyle={{ minWidth: '50rem' }}>
+{/* <DataTable value={restaurants} tableStyle={{ minWidth: '50rem' }}>
             {columns.map((col) => (
                 <Column key={col.field} field={col.field} header={col.header} />
             ))}
-        </DataTable>
+        </DataTable> */}
        
         </>
     )

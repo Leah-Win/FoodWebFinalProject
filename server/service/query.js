@@ -18,9 +18,10 @@ function getByParamQuery(tableName, param) {
     return query
 }
 
-function getByIdQuery(tableName) {
+function getByIdQuery(tableName,IdName) {
     // לא נכון בעליל
-    const query = `SELECT * FROM ${tableName} where id = ?`;
+ 
+    const query = `SELECT * FROM ${tableName} where ${IdName} = ?`;
     return query
 }
 
@@ -39,12 +40,17 @@ function deleteQuery(tableName, param) {
 }
 //חייבים לעשות גנרי!!!
 function postQuery(tableName,keys) {
+    console.log("kkkkkkkkkk")
     let query;
+    debugger
         query = `INSERT INTO ${tableName} (${keys.map(key=>key)}) VALUES (${keys.map(key=>"?")})`
+        console.log("kkkkkkkkkk")
     return query;
 }
 //חייבים לעשות גנרי!!!
 function putQuery(tableName,keys) {
+
+    //שגוי נראה לי
     let query;
          query = `UPDATE ${tableName} SET ${keys.map(key=>key+"=?")} WHERE ${tableName}id`;
         // case 'posts':
