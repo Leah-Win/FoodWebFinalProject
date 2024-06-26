@@ -96,8 +96,8 @@ export class RestaurantController {
 //?
     async deleteRestaurant(req, res, next) {
         try {
-            const restaurantService = new RestaurantService('id');
-            await RestaurantService.deleteRestaurant(req.params.id);
+            const restaurantService = new RestaurantService();
+            await restaurantService.deleteRestaurant(req.params.id);
             res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {

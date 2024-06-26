@@ -6,7 +6,7 @@
 import { query } from "express";
 
 function getQuery(tableName) {
-    const query = `SELECT * FROM ${tableName} `;
+    const query = `SELECT * FROM ${tableName}  AND IsActive = 1`;
     // const query = `SELECT * FROM ${tableName} where isActive = 1`;
 
     return query
@@ -14,48 +14,38 @@ function getQuery(tableName) {
 
 function getByParamQuery(tableName, param) {
     // const query = `SELECT * FROM ${tableName} where isActive = 1 AND ${param} = ?`;
-    const query = `SELECT * FROM ${tableName} where  ${param} = ?`;
+    const query = `SELECT * FROM ${tableName} where  ${param} = ? AND IsActive = 1`;
     return query
 }
 
 function getByIdQuery(tableName,IdName) {
-    // לא נכון בעליל
- 
-    const query = `SELECT * FROM ${tableName} where ${IdName} = ?`;
+    const query = `SELECT * FROM ${tableName} where ${IdName} = ? AND IsActive = 1`;
     return query
 }
 
+//צריך לבדוק האם צריך את הפונ' הזו
 function checkPasswordQuery(tableName) {
     console.log("????????????????????")
 
     // const query = `SELECT COUNT(*) FROM ${tableName} WHERE isActive = 1 AND username = ? AND password = ?`;
-    const query = `SELECT COUNT(*) FROM ${tableName} WHERE password = ? `;
+    const query = `SELECT COUNT(*) FROM ${tableName} WHERE password = ? AND IsActive = 1`;
     console.log("????????????????????")
     return query;
 }
 
 function deleteQuery(tableName, param) {
-    const query = `UPDATE ${tableName} SET isActive = 0 WHERE ${param} = ?`;
+    const query = `UPDATE ${tableName} SET IsActive = 0 WHERE ${param} = ? AND IsActive = 1`;
     return query
 }
-//חייבים לעשות גנרי!!!
+
 function postQuery(tableName,keys) {
-    console.log("kkkkkkkkkk")
     let query;
-    debugger
         query = `INSERT INTO ${tableName} (${keys.map(key=>key)}) VALUES (${keys.map(key=>"?")})`
-        console.log("kkkkkkkkkk")
     return query;
 }
-//חייבים לעשות גנרי!!!
-function putQuery(tableName,keys) {
 
-    //שגוי נראה לי
-    let query;
-         query = `UPDATE ${tableName} SET ${keys.map(key=>key+"=?")} WHERE ${tableName}id`;
-        // case 'posts':
-        //     query = `UPDATE posts SET title=?, body=? WHERE id = ?`;
-        //     break;
+function putQuery(tableName,keys,IdName) {    
+          let  query = `UPDATE ${tableName} SET ${keys.map(key=>`${key} = ?`)} WHERE ${IdName} = ? AND IsActive = 1`;      
     return query;
 }
 

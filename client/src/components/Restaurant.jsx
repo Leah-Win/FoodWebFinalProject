@@ -70,15 +70,15 @@ const  addRestaurant=()=>{
     fetch(`http://localhost:8080/restaurant`, {
         method: 'POST',
         body: JSON.stringify({
-          Name: restaurant.name,
-          Address: restaurant.address,
-          PhoneNumber: restaurant.phoneNumber,
-          ImageURL: restaurant.imageURL,
+          Name: restaurants.name,
+          Address: restaurants.address,
+          PhoneNumber: restaurants.phoneNumber,
+          ImageURL: restaurants.imageURL,
         }),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
         },
-      })
+    })
 }
 
         const columns = Object.keys(restaurants[0] || {}).map(key => ({

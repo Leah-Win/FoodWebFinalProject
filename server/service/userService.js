@@ -6,6 +6,7 @@ export class UserService {
     constructor(_tableName, _param = null) {
         this.tableName = "Users ";
         this.param = _param;
+        this.idName="UserID";
     }
 
     async getUser() {
@@ -15,7 +16,7 @@ export class UserService {
     }
 
     async getUserById(id) {
-        const query = getByIdQuery(this.tableName);
+        const query = getByIdQuery(this.tableName, this.idName);
         const result = await executeQuery(query, [id]);
         return result;
     }
@@ -43,7 +44,6 @@ export class UserService {
     }
 
     async addPassword(PasswordObj) {
-        // console.log("userid", PasswordObj,"id",PasswordObj.id);
         const query = postQuery("Passwords");
         PasswordObj = Object.values(PasswordObj);
         console.log("PasswordObj" + PasswordObj)
@@ -58,17 +58,16 @@ export class UserService {
     }
 
     async updateUser(user, id) {
-        // console.log("user", user)
-        const query = putQuery(this.tableName);
+        const userKeys = Object.keys(user);
         user = (typeof user === 'object') ? Object.values(user) : [user];
         user.push(id);
-        // console.log("user", user)
+        const query = putQuery(this.tableName,userKeys,this.idName);
         const result = await executeQuery(query, user);
         return result;
     }
 
     async deleteUser(id) {
-        const query = deleteQuery(this.tableName, this.param);
+        const query = deleteQuery(this.tableName, this.idName);
         const result = await executeQuery(query, [id]);
         return result;
     }
