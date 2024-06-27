@@ -4,11 +4,20 @@ import {
     useNavigate
 } from "react-router-dom";
 import { UserContext } from './UserProvider.jsx';
-// import "../css/style.css";
-
-
+import './css/home.css'
 function Home() {
-    const { userID } = useContext(UserContext);
+
+    const { user } = useContext(UserContext);
+    // useEffect(() => {
+    //     console.log(user)
+    //     if (user != null) {
+    //         console.log(user.Username)
+    //         navigate(`/home/user/${user.Username}`)
+    //     }
+    //     else{
+    //         navigate("/login");
+    //     }
+    // }, [])
     const name = JSON.parse(localStorage.getItem("currentUser")).Username;
     const navigate = useNavigate()
     function logOut() {
@@ -16,10 +25,9 @@ function Home() {
         // localStorage.removeItem("TOKEN");
         navigate("/login");
     }
+    
     function ToResetaurant() {
-        console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
         navigate(`/user/${name}/restaurant`);
-
         // /user/${name}/restaurant
     }
 

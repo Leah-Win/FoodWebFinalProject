@@ -6,14 +6,12 @@
 import { query } from "express";
 
 function getQuery(tableName) {
-    const query = `SELECT * FROM ${tableName}  AND IsActive = 1`;
-    // const query = `SELECT * FROM ${tableName} where isActive = 1`;
-
+    const query = `SELECT * FROM ${tableName}  WHERE IsActive = 1`;
     return query
 }
 
 function getByParamQuery(tableName, param) {
-    // const query = `SELECT * FROM ${tableName} where isActive = 1 AND ${param} = ?`;
+    console.log("hhhhhhhhhho")
     const query = `SELECT * FROM ${tableName} where  ${param} = ? AND IsActive = 1`;
     return query
 }
