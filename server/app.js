@@ -7,8 +7,8 @@ import {logErrors} from './middleware/logError.js'
 // import {verifyToken} from './middleware/verifyToken.js'
 import { formsRouter } from './router/formsRouter.js';
 import { restaurantRouter } from './router/restaurantRouter.js';
-import { menuRouter} from './router/menuRouter.js'
-import { itemsRouter} from './router/itemsRouter.js'
+//import { menuRouter} from './router/menuRouter.js'
+import { restaurantMenuRouter} from './router/restaurantMenuRouter.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,8 +24,9 @@ app.use(cors());
 app.use('/user', userRouter);
 app.use('/forms', formsRouter);
 app.use('/restaurant', restaurantRouter);
-app.use('/menu', menuRouter);
-app.use('/items', itemsRouter);
+app.use('/restaurantMenu', restaurantMenuRouter);
+
+// app.use('/menu', menuRouter);
 app.use("/img", express.static(__dirname + '/img'));
 app.use(logErrors);
 

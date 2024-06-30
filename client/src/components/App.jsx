@@ -7,6 +7,7 @@ import Home from './Home.jsx'
 import Login from './Forms/Login'
 import Restaurant from './Restaurant'
 import Registration from './Forms/Registration'
+import RestaurantMenu from './RestaurantMenu.jsx';
 // import NotFound from './NotFound';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/home/user/:name" element={<Home />} />
           <Route path="/user/:name/restaurant" element={<Restaurant />} />
+          <Route path="/user/:name/:restaurantID/restaurantMenu" element={<RestaurantMenu />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />}/>
           {/* <Route path="/register/details" element={<Details />} /> */}
