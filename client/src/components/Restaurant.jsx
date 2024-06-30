@@ -30,6 +30,7 @@ import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
+import Grid from '@mui/joy/Grid';
 export default function Restaurant() {
     const [expanded, setExpanded] = React.useState(false);
   
@@ -112,20 +113,6 @@ const  addRestaurant=()=>{
     })
 }
 
-        // const columns = Object.keys(restaurants[0] || {}).map(key => ({
-        //     field: key,
-        //     header: key.charAt(0).toUpperCase() + key.slice(1)
-        // }));
-        // const ExpandMore = styled((props) => {
-        //     const { expand, ...other } = props;
-        //     return <IconButton {...other} />;
-        //   })(({ theme, expand }) => ({
-        //     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-        //     marginLeft: 'auto',
-        //     transition: theme.transitions.create('transform', {
-        //       duration: theme.transitions.duration.shortest,
-        //     }),
-        //   }));
           
         
         
@@ -133,7 +120,14 @@ const  addRestaurant=()=>{
         <>
 
 <h1>{name}</h1>
+<Grid
+      container
+      spacing={{ xs: 2, md: 3 }}
+      columns={{ xs: 4, sm: 8, md: 12 }}
+      sx={{ flexGrow: 1 }}
+    >
 {restaurants.map((restaurant)=>(
+   <Grid xs={2} sm={4} md={4} key={restaurant.RestaurantID}>
 <Card variant="outlined" sx={{ width: 320 }} key={restaurant.RestaurantID}>
       <CardOverflow>
         <AspectRatio ratio="2">
@@ -161,7 +155,9 @@ const  addRestaurant=()=>{
           </Typography>
         </CardContent> */}
       </CardOverflow>
-    </Card>))}
+    </Card>
+    </Grid>))}
+    </Grid>
 {/* <Stack direction="row" spacing={3}>
 
 {restaurants.map((restaurant)=>(
