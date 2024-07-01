@@ -10,7 +10,7 @@ export class FormController {
                 throw new Error(404);
             else {
                 const data = new UserService('Users', 'Username');
-                const resultData = await data.getUserByParam(req.body.username);
+                const resultData = await data.getUserByParam(req.body.email);
                 console.log("resultData", resultData)
                 return res.status(200).json({ status: 200, data: resultData });
             }

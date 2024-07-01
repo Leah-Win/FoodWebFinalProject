@@ -11,8 +11,9 @@ function getQuery(tableName) {
 }
 
 function getByParamQuery(tableName, param) {
-    console.log("hhhhhhhhhho")
+    console.log("hhhhhhhhhho",param)
     const query = `SELECT * FROM ${tableName} where  ${param} = ? AND IsActive = 1`;
+    console.log(query)
     return query
 }
 
@@ -26,7 +27,7 @@ function checkPasswordQuery(tableName) {
     console.log("????????????????????")
 
     // const query = `SELECT COUNT(*) FROM ${tableName} WHERE isActive = 1 AND username = ? AND password = ?`;
-    const query = `SELECT COUNT(*) FROM ${tableName} WHERE password = ? AND IsActive = 1`;
+    const query = `SELECT COUNT(*) FROM ${tableName} WHERE Password = ? AND IsActive = 1`;
     console.log("????????????????????")
     return query;
 }

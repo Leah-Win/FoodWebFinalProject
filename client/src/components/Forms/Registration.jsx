@@ -80,7 +80,7 @@ const Register = () => {
       reset();
       return;
     }
-    fetch(`http://localhost:8080/forms/signup/?username=${userDetails.username}`)
+    fetch(`http://localhost:8080/signup/?username=${userDetails.username}`)
       .then(data => data.json())
       .then(data => {
         if (data.status == 409) {

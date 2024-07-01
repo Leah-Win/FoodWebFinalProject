@@ -5,10 +5,13 @@ import { fileURLToPath } from 'url';
 import { userRouter } from './router/userRouter.js'
 import {logErrors} from './middleware/logError.js'
 // import {verifyToken} from './middleware/verifyToken.js'
-import { formsRouter } from './router/formsRouter.js';
+// import { formsRouter } from './router/formsRouter.js';
 import { restaurantRouter } from './router/restaurantRouter.js';
 //import { menuRouter} from './router/menuRouter.js'
-import { restaurantMenuRouter} from './router/restaurantMenuRouter.js'
+import { restaurantMenuRouter} from './router/restaurantMenuRouter.js';
+import { orderRouter } from './router/OrderRouter.js';
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,9 +25,11 @@ app.use(cors());
 // app.use(verifyToken)
 // app.use('/i',express.static(""))
 app.use('/user', userRouter);
-app.use('/forms', formsRouter);
+// app.use('/forms', formsRouter);
 app.use('/restaurant', restaurantRouter);
 app.use('/restaurantMenu', restaurantMenuRouter);
+app.use('/order', orderRouter);
+
 
 // app.use('/menu', menuRouter);
 app.use("/img", express.static(__dirname + '/img'));

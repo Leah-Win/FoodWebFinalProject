@@ -28,11 +28,15 @@ export class UserService {
     }
 
     async checkIfUserExist(Item) {
-        const query = checkPasswordQuery("Passwords");
-        Item = Object.values(Item);
-        console.log("lolololololo", Item[1])
-        const result = await executeQuery(query, [Item[1]]);
-        return result[0]["COUNT(*)"];
+        // const query = checkPasswordQuery("Passwords");
+        console.log("lolololololo", Item)
+        const query = getByParamQuery("Passwords", "Password");
+        // Item = Object.values(Item);
+        // console.log("lolololololo", Item)
+        const result = await executeQuery(query,[Item]);
+        console.log("lolololololo", Item)
+        return result;
+        // return result[0]["COUNT(*)"];
     }
 
     async addUser(user) {
@@ -44,16 +48,14 @@ export class UserService {
     }
 
     async addPassword(PasswordObj) {
-        const query = postQuery("Passwords");
-        PasswordObj = Object.values(PasswordObj);
-        console.log("PasswordObj" + PasswordObj)
-
+        const passwordKeys = Object.keys(PasswordObj);
+        const passwordValues = Object.values(PasswordObj);
+        // PasswordObj = Object.values(PasswordObj);
+        const query = postQuery("Passwords",passwordKeys);
         // const PasswordObj = (typeof password === 'object')? Object.values(password): [password];
         // PasswordObj.push(id);
         // PasswordObj = Object.values(PasswordObj);
-
-        console.log("insert password3" + PasswordObj)
-        const result = await executeQuery(query, PasswordObj);
+        const result = await executeQuery(query, passwordValues);
         return result;
     }
 

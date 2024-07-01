@@ -4,12 +4,12 @@ export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   
-  // const [userID, setUserID] = useState();
+  const [userID, setUserID] = useState();
 
-  //  const updateUserID = () => {
-  //   const id = JSON.parse(localStorage.getItem('currentUser')).id;
-  //   setUserID(id);
-  // };
+   const updateUserID = () => {
+    const id = JSON.parse(localStorage.getItem('currentUser')).id;
+    setUserID(id);
+  };
 
 //A
   const initialUser = JSON.parse(localStorage.getItem("currentUser"))
