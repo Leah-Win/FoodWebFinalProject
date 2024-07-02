@@ -14,6 +14,7 @@ import Link from '@mui/joy/Link';
 import Add from '@mui/icons-material/Add';
 import Button from '@mui/joy/Button';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import ButtonGroup from '@mui/material/ButtonGroup';
 function RestaurantMenu() {
   const {restaurantID}=useParams();
   console.log(restaurantID);
@@ -101,11 +102,15 @@ function RestaurantMenu() {
                   />
                 </AspectRatio>
               </CardOverflow>
+              <ButtonGroup variant="contained" aria-label="Basic button group">
               <Button onClick={() => AddItem(item)} variant="outlined" color="neutral" >+
               </Button>
-              {item.Quantity}
-              <Button onClick={() => RemoveItem(item)} variant="outlined" color="neutral" >-
-              </Button>
+              
+             { item.Quantity?<Button onClick={() => RemoveItem(item)} variant="outlined" color="neutral" >-
+              </Button>:<></>}
+              
+              <>{item.Quantity}</></ButtonGroup>
+            
               <CardContent>
                 <Typography level="title-md">{item.Name}</Typography>
                 <Typography level="title-md">{item.Price + "₪"}</Typography>

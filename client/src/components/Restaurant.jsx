@@ -2,6 +2,9 @@ import React, { useRef, useContext, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 
+
+ import './css/resturants.css'
+
 // import { UserContext } from '
 import { UserContext } from './UserProvider'
 // import { DataTable } from 'primereact/datatable';
@@ -43,7 +46,7 @@ export default function Restaurant() {
 
   const { user } = useContext(UserContext);
   // const { userID } = useContext(UserContext);
-  const name = JSON.parse(localStorage.getItem("currentUser")).Username;
+  // const name = JSON.parse(localStorage.getItem("currentUser")).username;
   const navigate = useNavigate()
   // useEffect(
   //     () => {
@@ -68,6 +71,7 @@ export default function Restaurant() {
 
   // }
   useEffect(() => {
+    console.log(user)
     if (user == null) {
       navigate('/login')
     }
@@ -116,7 +120,7 @@ export default function Restaurant() {
 
   return (
     <>
-      <h1>{name}</h1>
+      <h1>{user.username}</h1>
       <Grid
         container
         spacing={{ xs: 3, md: 3 }}

@@ -9,6 +9,7 @@ export class RestaurantMenuController {
             console.log("get all rytutrrr")
             const service = new RestaurantMenuService();
             const resultRestaurantMenu = await service.getAllRestaurantMenu()
+            console.log(resultRestaurantMenu)
             return res.status(200).json(resultRestaurantMenu);
         }
         catch (ex) {

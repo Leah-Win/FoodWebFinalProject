@@ -4,55 +4,15 @@ import express from "express";
 
 export class UserController {
 
-    async getUser(req, res, next) {
-        try {
-            const service = new UserService();
-            const resultItem = await service.checkIfUserExist(req.body);
-            if (resultItem == 0)
-                throw new Error(404);
-            else {
-                const resultData = await service.getUserByParam(req.body.email);
-                return res.status(200).json({ status: 200, data: resultData });
-            }
-        }
-        catch (ex) {
-            const err = {};
-            err.statusCode = (ex.message == 404) ? 404 : 500
-            err.message = ex.message;
-            next(err)
-        }
-    }
-
-
-    async login(req, res, next) {
-        console.log("11111111111111")
-        try {
-            const service = new UserService();
-            const resultItem = await service.checkIfUserExist(req.body.password);
-            if (resultItem == 0)
-                throw new Error(404);
-            else {
-                const resultData = await service.getUserByParam(req.body.email);
-                return res.status(200).json({ status: 200, data: resultData });
-            }
-        }
-        catch (ex) {
-            const err = {};
-            err.statusCode = (ex.message == 404) ? 404 : 500
-            err.message = ex.message;
-            next(err)
-        }
-    }
-    // async loginUser(req, res, next) {
+    // async getUser(req, res, next) {
     //     try {
-    //         const service = new UserService('Passwords');
+    //         const service = new UserService();
     //         const resultItem = await service.checkIfUserExist(req.body);
     //         if (resultItem == 0)
     //             throw new Error(404);
     //         else {
-    //             const data = new UserService('Users', 'Username');
-    //             const resultData = await data.getUserByParam(req.body.email);
-    //             console.log("resultData", resultData)
+    //             const resultData = await service.getUserByParams(req.body);
+    //             return res.status(200).json({ status: 200, data: resultData });
     //         }
     //     }
     //     catch (ex) {
@@ -63,38 +23,38 @@ export class UserController {
     //     }
     // }
 
-    async getUserById(req, res, next) {
+
+    async login(req, res, next) {
         try {
             const service = new UserService();
-            const resultItem = await service.getUserById(req.params.id);
-            res.status(200).json(resultItem);
+            const resultData = await service.getUserByParams(req.body);
+            if (resultData == [] || resultData == undefined || resultData.length == 0)
+                throw new Error(404);
+            const passwordObj = { "Password": "".concat(req.body.Password), "UserID": resultData[0].UserID }
+            const isExist = await service.checkIfUserExist(passwordObj);
+            if (isExist == [] || isExist == undefined || isExist.length == 0)
+                throw new Error(500);
+            return res.status(200).json({ status: 200, data: resultData });
         }
         catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err);
+            const err = {};
+            err.statusCode = (ex.message == 404) ? 404 : 500
+            err.message = ex.message;
+            next(err)
         }
     }
 
-    async signUp(req, res, next) {
-        try {
 
-            //איפה יש בדיקה אם משתמש קיים?
-            console.log("adduser")
+    async isExist(req, res, next) {
+        console.log("isExist")
+        try {
             const service = new UserService();
-            console.log(req.body);
-            const resultItem = await service.addUser(req.body);
-            const userObject = { "UserId": resultItem.insertId, "Username": req.body.Username,
-             "Email": req.body.Email, "phoneNumber":req.body.PhoneNumber, "Address":req.body.Address }
-             console.log(userObject)
-             //לשנות את הצורה בה הכנסנו סיסמה!!
-            //  console.log("body",req.body)
-             const passwordService = new UserService('Passwords');
-             const passwordObj=[resultItem.insertId,req.body.Password]
-             const s=await passwordService.addPassword(passwordObj);
-             console.log("s",s,)
-            res.status(200).json({ status: 200, data: userObject });
+            const resultData = await service.getUserByParams(req.params);
+            if (resultData != [] && resultData != undefined && resultData.length != 0)
+                throw new Error(409);
+            else
+                console.log("wow")
+            return res.status(200).json({ status: 200 });
         }
         catch (ex) {
             const err = {};
@@ -104,6 +64,80 @@ export class UserController {
         }
     }
 
+
+    async signUp(req, res, next) {
+        try {
+            try {
+                console.log("sooooooooooooososssssss")
+                const service = new UserService();
+                const resultItem = await service.addUser(req.body);
+                const userObject = {
+                    "userId": resultItem.insertId, "username": req.body.Username,
+                    "email": req.body.Email, "phoneNumber": req.body.PhoneNumber, "address": req.body.Address
+                }
+                console.log("userObject",userObject)
+
+                //  const passwordService = new UserService('Passwords');
+                //   const passwordObj = [resultItem.insertId, req.body.Password]
+            const passwordObj = { "Password": "".concat(req.body.Password), "UserID":  resultItem.insertId }
+
+                const s = await service.addPassword(passwordObj);
+                console.log("s", s,)
+                //   res.status(200).json({ status: 200, data: userObject });
+                return res.status(200).json({ status: 200, data: userObject });
+            }
+            catch (ex) {
+                const err = {};
+                err.statusCode = (ex.message == 404) ? 404 : 500
+                err.message = ex.message;
+                next(err)
+            }
+        }
+
+        //איפה יש בדיקה אם משתמש קיים?
+        // console.log("adduser")
+        // const service = new UserService();
+        // console.log(req.body);
+        // const resultItem = await service.addUser(req.body);
+        // const userObject = {
+        //     "UserId": resultItem.insertId, "Username": req.body.Username,
+        //     "Email": req.body.Email, "phoneNumber": req.body.PhoneNumber, "Address": req.body.Address
+        // }
+        // console.log(userObject)
+        // //לשנות את הצורה בה הכנסנו סיסמה!!
+        // //  console.log("body",req.body)
+        // const passwordService = new UserService('Passwords');
+        // const passwordObj = [resultItem.insertId, req.body.Password]
+        // const s = await passwordService.addPassword(passwordObj);
+        // console.log("s", s,)
+        // res.status(200).json({ status: 200, data: userObject });
+
+
+        catch (ex) {
+            const err = {};
+            err.statusCode = (ex.message == 409) ? 409 : 500
+            err.message = ex.message;
+            next(err)
+        }
+    }
+    async getUserById(req, res, next) {
+        try {
+            const service = new UserService();
+
+            const isExist = await service.checkIfUserExist(req.params.id);
+            if (isExist != []) {
+                const resultItem = await service.getUserById(req.params.id);
+                res.status(200).json(resultItem);
+            }
+
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err);
+        }
+    }
     // async signupUser(req, res, next) {
 
     //     try {
@@ -133,12 +167,12 @@ export class UserController {
             await service.addPassword(req.body);
             // const passwordobj = { "UserId": req.body.UserId, "password": req.body.password}
             //  console.log(passwordobj)
-             //לשנות את הצורה בה הכנסנו סיסמה!!
+            //לשנות את הצורה בה הכנסנו סיסמה!!
             //  console.log("body",req.body)
             //  const passwordService = new UserService('Passwords');
             //  const s=await passwordService.addPassword(resultItem.insertId, req.body.Password);
             //  console.log("s",s,)
-            res.status(200).json({ status: 200});
+            res.status(200).json({ status: 200 });
         }
         catch (ex) {
             const err = {}
@@ -161,7 +195,7 @@ export class UserController {
             next(err)
         }
     }
-//?
+    //?
     async deleteUser(req, res, next) {
         try {
             const userService = new UserService();
@@ -177,9 +211,9 @@ export class UserController {
     }
 
 
-   
 
-   
+
+
 
     async addPassword(req, res, next) {
         try {

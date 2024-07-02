@@ -67,7 +67,6 @@ const Register = () => {
 
   useEffect(() => {
     if (user != null) {
-      // navigate(`/home/users/${user.username}`)
       navigate(`/register`)
     }
   }
@@ -80,11 +79,11 @@ const Register = () => {
       reset();
       return;
     }
-    fetch(`http://localhost:8080/signup/?username=${userDetails.username}`)
+    fetch(`http://localhost:8080/user/Email/${userDetails.email}`)
       .then(data => data.json())
       .then(data => {
         if (data.status == 409) {
-          alert('This user name aleady exists');
+          alert('Incorrect details');
           reset();
           return;
         }
@@ -95,13 +94,16 @@ const Register = () => {
   }
 
   const userData = (moreDetails) => {
-    fetch(`http://localhost:8080/user`, {
+    console.log("2sign2 2up2")
+    const hash_password = generatePasswordHash(user.password);
+    fetch(`http://localhost:8080/user/signup`, {
       method: 'POST',
       body: JSON.stringify({
-        Username: user.username,
-        Email: moreDetails.email,
+        Username: moreDetails.username,
+        Email: user.email,
         PhoneNumber: moreDetails.phoneNumber,
-        Address: moreDetails.address
+        Address: moreDetails.address,
+        password: hash_password
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -109,46 +111,44 @@ const Register = () => {
     })
       .then((response) => response.json())
       .then(response => {
-        // insertPassword();
         const currentUser = response.data;
-        console.log(currentUser);
         setCurrentUser(currentUser)
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
-        console.log("user.userId",user)
+        localStorage.setItem("currentUser", JSON.stringify(currentUser))
       }).then(()=>{console.log("user.userId",user.userId);
-        // insertPassword()
+
       });
-    navigate(`/home/user/${user.username}`);
+      
+    navigate(`/user/${user.username}/restaurant`);
   }
 
-  const insertPassword = () => {
-    console.log("insert password1")
-    console.log("user.userId",user)
-    const hash_password = generatePasswordHash(user.password);
-    fetch(`http://localhost:8080/forms`, {
-      method: 'POST',
-      body: JSON.stringify({
-        userId: user.userId,
-        password: hash_password
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    }).then((response) => response.json())
-      .then((data) => {
-      console.log("insert password2"+data)
-        if (data.status != 200)
-          alert(data.message)
-      })
-  }
+  // const insertPassword = () => {
+  //   console.log("insert password1")
+  //   console.log("user.userId",user)
+  //   const hash_password = generatePasswordHash(user.password);
+  //   fetch(`http://localhost:8080/forms`, {
+  //     method: 'POST',
+  //     body: JSON.stringify({
+  //       userId: user.userId,
+  //       password: hash_password
+  //     }),
+  //     headers: {
+  //       'Content-type': 'application/json; charset=UTF-8',
+  //     },
+  //   }).then((response) => response.json())
+  //     .then((data) => {
+  //     console.log("insert password2"+data)
+  //       if (data.status != 200)
+  //         alert(data.message)
+  //     })
+  // }
 
   return (
     <>
       <h3>REGISTER</h3>
       {isExsist ? <form onSubmit={handleSubmit(signUp)} className="forms">
-        <input type="text" placeholder="user name"{...register("username", IntegrityChecks.username)} /><br />
-        {errors.username && (
-          <p className="errorMsg">{errors.username.message}</p>)}
+        <input type="email" placeholder="email"{...register("email", IntegrityChecks.email)} /><br />
+        {errors.email && (
+          <p className="errorMsg">{errors.email.message}</p>)}
         <input type="password" placeholder="password" {...register("password", IntegrityChecks.Password)} /><br />
         {errors.password && (
           <p className="errorMsg">{errors.password.message}</p>)}
@@ -160,9 +160,9 @@ const Register = () => {
       </form>
         :
         <form onSubmit={handleSubmit(userData)} className="forms">
-          <input type="email" placeholder="Email" {...register("email", IntegrityChecks.email)} /><br />
-          {errors.email && (
-            <p className="errorMsg">{errors.email.message}</p>)}
+          <input type="text" placeholder="user name" {...register("username", IntegrityChecks.username)} /><br />
+          {errors.username && (
+            <p className="errorMsg">{errors.username.message}</p>)}
           <input type="text" placeholder="phone number" {...register("phoneNumber", IntegrityChecks.phoneNumber)} /><br />
           {errors.phoneNumber && (
             <p className="errorMsg">{errors.phoneNumber.message}</p>)}

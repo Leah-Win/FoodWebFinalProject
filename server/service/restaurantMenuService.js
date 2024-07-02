@@ -10,14 +10,14 @@ export class RestaurantMenuService {
     }
 
     async getAllRestaurantMenu() {
-        console.log("ololololforlgdl6xh")
+        //console.log("ololololforlgdl6xh")
         const query = getQuery(this.tableName);
         const result = await executeQuery(query);
         return result;
     }
 
     async getMenuItemById(id) {
-        console.log("hi");
+        // console.log("hi");
         const query = getByIdQuery(this.tableName,this.idName);
         const result = await executeQuery(query, [id]);
         return result;

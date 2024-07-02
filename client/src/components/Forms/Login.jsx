@@ -7,33 +7,31 @@ import { UserContext } from '../UserProvider'
 const Login = () => {
     const navigate = useNavigate();
     const { user, setCurrentUser } = useContext(UserContext);
-    
     const generatePasswordHash = (password) => {
         const hashedPassword = CryptoJS.SHA256(password).toString();
         return hashedPassword;
     };
 
     useEffect(() => {
-        console.log(user)
         if (user != null) {
             console.log(user.Username)
             navigate(`/user/${user.Username}/restaurant`)
         }
-        else{
+        else {
             navigate("/login");
         }
     }, [])
 
-    const {register, handleSubmit, reset,} = useForm({defaultValues: {email: '',password: ''}});
- 
+    const { register, handleSubmit, reset, } = useForm({ defaultValues: { email: '', password: '' } });
+
     const onSubmit = (userDetails) => {
-      const hash_password = generatePasswordHash(userDetails.password);
-      //console.log(hash_password);
+        const hash_password = generatePasswordHash(userDetails.password);
+        console.log(hash_password);
         fetch(`http://localhost:8080/user/login`, {
             method: 'POST',
             body: JSON.stringify({
-                email: userDetails.email,
-                password: hash_password
+                Email: userDetails.email,
+                Password: hash_password
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -42,28 +40,28 @@ const Login = () => {
             .then(response => response.json())
             .then(response => {
                 if (response.status == 200) {
-                    console.log("2222222222222222")
-                    reset();
                     const currentUser = {
-                        id: response.data[0].UserID, username: response.data[0].Username,
-                        email: response.data[0].Email, phone: response.data[0].PhoneNumber,address:response.data[0].Address
+                        id: response.data[0].UserID,
+                        username: response.data[0].Username,
+                        email: response.data[0].Email,
+                        phone: response.data[0].PhoneNumber,
+                        address: response.data[0].Address
                     };
                     setCurrentUser(currentUser);
-                    //console.log("currentUser", currentUser)
                     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-                    //console.log("currentUser", localStorage.getItem('currentUser'))
-                    navigate(`/user/${response.data[0].username}/restaurant`);
+                   reset();
+                    navigate(`/user/${response.data[0].Username}/restaurant`);
                 }
-                else{
+                else {
                     throw new Error(response.message)
                 }
             })
             // .then(data => {
             //     localStorage.setItem("TOKEN", data.accessToken);
             // })
-           .catch((err)=>{
-                if(err.message==="Not found")
-                    alert("A user with this data is not found");
+            .catch((err) => {
+                if (err.message === "Not found")
+                    alert("Incorrect details");
             })
     }
 

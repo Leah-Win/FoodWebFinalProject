@@ -14,6 +14,15 @@ function getByParamQuery(tableName, param) {
     console.log("hhhhhhhhhho",param)
     const query = `SELECT * FROM ${tableName} where  ${param} = ? AND IsActive = 1`;
     console.log(query)
+
+    return query
+}
+
+function getByParamsQuery(tableName, keys) {
+    console.log("hhhhhhhhhho",keys)
+    const query = `SELECT * FROM ${tableName} where ${keys.map(key=>`${key} = ?`).join(' AND ')} AND IsActive = 1`;
+    console.log(query)
+
     return query
 }
 
@@ -23,14 +32,14 @@ function getByIdQuery(tableName,IdName) {
 }
 
 //צריך לבדוק האם צריך את הפונ' הזו
-function checkPasswordQuery(tableName) {
-    console.log("????????????????????")
+// function checkPasswordQuery(tableName) {
+//     console.log("????????????????????")
 
-    // const query = `SELECT COUNT(*) FROM ${tableName} WHERE isActive = 1 AND username = ? AND password = ?`;
-    const query = `SELECT COUNT(*) FROM ${tableName} WHERE Password = ? AND IsActive = 1`;
-    console.log("????????????????????")
-    return query;
-}
+//     // const query = `SELECT COUNT(*) FROM ${tableName} WHERE isActive = 1 AND username = ? AND password = ?`;
+//     const query = `SELECT COUNT(*) FROM ${tableName} WHERE Password = ? AND UserID = ? IsActive = 1`;
+//     console.log("????????????????????")
+//     return query;
+// }
 
 function deleteQuery(tableName, param) {
     const query = `UPDATE ${tableName} SET IsActive = 0 WHERE ${param} = ? AND IsActive = 1`;
@@ -54,7 +63,7 @@ function limitQuery(tableName) {
 }
 
 export {
-    getQuery, getByIdQuery, getByParamQuery, deleteQuery, postQuery, putQuery, checkPasswordQuery, limitQuery
+    getQuery, getByIdQuery, getByParamQuery, deleteQuery, postQuery, putQuery, limitQuery,getByParamsQuery
 }
 
 
