@@ -263,7 +263,7 @@ export default function Restaurant() {
                     <Button onClick={() => deleteTheRestaurant(restaurant.id)} variant="outlined" color="neutral" >  🗑  </Button>
                   </span> : <></>}
                   {isManager ? <span >
-                    <Button onClick={() => UpdateRestaurnt(restaurant)} variant="outlined" color="neutral" >  🖊  </Button>
+                    <Button onClick={() => setUpdateRestaurant(true)} variant="outlined" color="neutral" >  🖊  </Button>
                   </span> : <></>}
                 </AspectRatio>
               </CardOverflow>
