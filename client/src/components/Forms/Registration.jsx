@@ -94,7 +94,7 @@ const Register = () => {
   }
 
   const userData = (moreDetails) => {
-    console.log("2sign2 2up2")
+    //console.log("2sign2 2up2")
     const hash_password = generatePasswordHash(user.password);
     fetch(`http://localhost:8080/user/signup`, {
       method: 'POST',
@@ -175,6 +175,8 @@ const Register = () => {
   )
 }
 export default Register
+
+
 
 
 // import React from 'react'

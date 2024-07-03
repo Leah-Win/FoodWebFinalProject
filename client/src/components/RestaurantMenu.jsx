@@ -91,8 +91,8 @@ function RestaurantMenu() {
         sx={{ justifyContent: "flex-start" }}
       >
         {menu.map((item) => (
-          <Grid xs={2} sm={4} md={4} key={item.RestaurantMenuID}>
-            <Card color="primary" variant="outlined" sx={{ width: 250 }} key={item.RestaurantMenuID} >
+          <Grid  columnSpacing={2} rowSpacing={2} justifyContent="center"  key={item.RestaurantMenuID}>
+            <Card color="primary" variant="outlined" sx={{ width: 200 }} key={item.RestaurantMenuID} >
               <CardOverflow>
                 <AspectRatio ratio="2">
                   <img
@@ -102,14 +102,14 @@ function RestaurantMenu() {
                   />
                 </AspectRatio>
               </CardOverflow>
-              <ButtonGroup variant="contained" aria-label="Basic button group">
+              <ButtonGroup aria-label="Basic button group">
               <Button onClick={() => AddItem(item)} variant="outlined" color="neutral" >+
               </Button>
+              {item.Quantity?<Typography  align="center" color="warning" sx={{ width: 200 }} level="title-md">{item.Quantity}</Typography>:<></>}
               
              { item.Quantity?<Button onClick={() => RemoveItem(item)} variant="outlined" color="neutral" >-
               </Button>:<></>}
-              
-              <>{item.Quantity}</></ButtonGroup>
+              </ButtonGroup>
             
               <CardContent>
                 <Typography level="title-md">{item.Name}</Typography>
@@ -122,7 +122,7 @@ function RestaurantMenu() {
           </Grid>))}
       </Grid>
       <Button endDecorator={<KeyboardArrowRight />} color="success">
-            Completion of order
+            Completion of order 🛒
       <Link
                     overlay
                     href={`/user/${name}/order`}

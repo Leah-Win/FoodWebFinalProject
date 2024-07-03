@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 
 
- import './css/resturants.css'
+import './css/resturants.css'
 
 // import { UserContext } from '
 import { UserContext } from './UserProvider'
@@ -35,6 +35,10 @@ import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import Grid from '@mui/joy/Grid';
 import Link from '@mui/joy/Link';
+import Button from '@mui/joy/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+
+
 export default function Restaurant() {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -77,8 +81,20 @@ export default function Restaurant() {
     }
     getData();
   }, []);
-
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [restaurants, setRestaurants] = useState([]);
+  const [updateRestaurant, setUpdateRestaurant] = useState(false);
+
+  const [isManager, setIsManager] = useState(true);
+  const [newRestaurant, setNewRestaurant] = useState(false);
+
+
+
   // const [currentRestaurant, setCurrentRestaurant] = useState([]);
 
   useEffect(() => {
@@ -103,24 +119,122 @@ export default function Restaurant() {
 
   // }
 
-  // const addRestaurant = () => {
-  //   fetch(`http://localhost:8080/restaurant`, {
-  //     method: 'POST',
-  //     body: JSON.stringify({
-  //       Name: restaurants.name,
-  //       Address: restaurants.address,
-  //       PhoneNumber: restaurants.phoneNumber,
-  //       ImageURL: restaurants.imageURL,
-  //     }),
-  //     headers: {
-  //       'Content-type': 'application/json; charset=UTF-8',
-  //     },
-  //   })
+  const AddRestaurant = () => {
+    setNewRestaurant(true)
+  }
+
+  // const DeleteRestaurant =()=>{
+  //   setDeleteRestaurant(true)
   // }
+
+  // const AddRestaurant =()=>{
+  //   setNewRestaurant(true)
+  // }
+  const deleteTheRestaurant = (restaurantDetails) => {
+    fetch(`http://localhost:8080/restaurant/${restaurantDetails}`, {
+      method: 'DELETE',
+    })
+  }
+  //.then(()=>{
+  //     // reset()
+  //     setDeleteRestaurant(false)}
+  // );
+
+  const UpdateRestaurnt = (restaurantDetails) => {
+
+    fetch(`http://localhost:8080/restaurant/${restaurantDetails.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        Name: restaurantDetails.name,
+        Address: restaurantDetails.address,
+        PhoneNumber: restaurantDetails.phoneNumber,
+        ImageURL: restaurantDetails.imageURL,
+        Description: restaurantDetails.description
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }).then(response => response.json())
+    setUpdateRestaurant(false)
+  }
+
+  const addRestaurant = (restaurantDetails) => {
+    fetch(`http://localhost:8080/restaurant`, {
+      method: 'POST',
+      body: JSON.stringify({
+        Name: restaurantDetails.name,
+        Address: restaurantDetails.address,
+        PhoneNumber: restaurantDetails.phoneNumber,
+        ImageURL: restaurantDetails.imageURL,
+        Description: restaurantDetails.description
+
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }).then((response) => response.json())
+      .then(() => {
+        reset()
+        setNewRestaurant(false)
+      }
+      )
+  }
+
 
   return (
     <>
       <h1>{user.username}</h1>
+      {isManager ? <Button onClick={AddRestaurant} variant="outlined" color="neutral" >New Restaurnt</Button> : <></>}
+
+      {
+        newRestaurant && <form onSubmit={handleSubmit(addRestaurant)} className="forms">
+
+          <input type="text" placeholder="name" {...register("name")} /><br />
+          {/* {errors.name && (
+            <p className="errorMsg">{errors.name.message}</p>)} */}
+          <input type="number" placeholder="phone number" {...register("phoneNumber")} /><br />
+          {/* {errors.phoneNumber && (
+            <p className="errorMsg">{errors.phoneNumber.message}</p>)} */}
+          <input type="text" placeholder="Address" {...register("address")} /><br />
+          {/* {errors.adderss && (
+            <p className="errorMsg">{errors.address.message}</p>)}<br /> */}
+          {/* {errors.imageURL && (
+            <p className="errorMsg">{errors.imageURL.message}</p>)} */}
+          <input type="text" placeholder="imageURL" {...register("imageURL")} /><br />
+          {/* {errors.phoneNumber && (
+            <p className="errorMsg">{errors.phoneNumber.message}</p>)} */}
+          <input type="text" placeholder="Description" {...register("description")} /><br />
+
+          <button type="submit" className="BTNforns">Add Restaurnt</button>
+        </form>
+      }
+
+
+
+      {updateRestaurant && <form onSubmit={handleSubmit(UpdateRestaurnt)} className="forms">
+        <input type="text" placeholder="name" {...register("name")} /><br />
+        {/* {errors.name && (
+        <p className="errorMsg">{errors.name.message}</p>)} */}
+        <input type="number" placeholder="phone number" {...register("phoneNumber")} /><br />
+        {/* {errors.phoneNumber && (
+        <p className="errorMsg">{errors.phoneNumber.message}</p>)} */}
+        <input type="text" placeholder="Address" {...register("address")} /><br />
+        {/* {errors.adderss && (
+        <p className="errorMsg">{errors.address.message}</p>)}<br /> */}
+        {/* {errors.imageURL && (
+        <p className="errorMsg">{errors.imageURL.message}</p>)} */}
+        <input type="text" placeholder="imageURL" {...register("imageURL")} /><br />
+        {/* {errors.phoneNumber && (
+        <p className="errorMsg">{errors.phoneNumber.message}</p>)} */}
+        <input type="text" placeholder="Description" {...register("description")} /><br />
+
+        <button type="submit" className="BTNforns">update Restaurnt</button>
+      </form>
+
+
+
+      }
       <Grid
         container
         spacing={{ xs: 3, md: 3 }}
@@ -128,22 +242,29 @@ export default function Restaurant() {
         sx={{ justifyContent: "flex-end" }}
       >
         {restaurants.map((restaurant) => (
-          <Grid xs={2} sm={4} md={4} key={restaurant.RestaurantID}>
-            <Card variant="outlined" sx={{ width: 320 }} key={restaurant.RestaurantID}>
+
+          <Grid columnSpacing={2} rowSpacing={2} justifyContent="center" md={2} container key={restaurant.RestaurantID}>
+            <Card variant="outlined" sx={{ width: 300 }} key={restaurant.RestaurantID}>
               <CardOverflow>
                 <AspectRatio ratio="2">
                   <Link
                     overlay
-                    href={`/user/${name}/${restaurant.RestaurantID}/restaurantMenu`}
+                    href={`/user/${user.username}/${restaurant.RestaurantID}/restaurantMenu`}
                     state={{ infoResID: restaurant.RestaurantID }}
                     underline="none"
                     sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                    <img
-                      src={restaurant.ImageURL}
+                    <img src={restaurant.ImageURL}
                       loading="lazy"
-                      alt=""
-                    />
+                      alt="">
+                    </img>
                   </Link>
+                  {isManager ? <span >
+                    {/* <button onClick={() => deleteTheRestaurant(restaurant.id)}></button> */}
+                    <Button onClick={() => deleteTheRestaurant(restaurant.id)} variant="outlined" color="neutral" >  🗑  </Button>
+                  </span> : <></>}
+                  {isManager ? <span >
+                    <Button onClick={() => UpdateRestaurnt(restaurant)} variant="outlined" color="neutral" >  🖊  </Button>
+                  </span> : <></>}
                 </AspectRatio>
               </CardOverflow>
               <CardContent>
@@ -155,7 +276,21 @@ export default function Restaurant() {
             </Card>
           </Grid>))}
       </Grid>
+
     </>
   )
 }
+
+
+
+// {
+//   "RestaurantID": 1,
+//   "Name": "a",
+//   "Address": "aaa",
+//   "PhoneNumber": "2222222222",
+//   "ImageURL": "http://localhost:8080/img/restaurant/1.jpg",
+//   "IsActive": 1,
+//   "Description": "fffdfv"
+// },
+
 

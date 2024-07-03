@@ -49,6 +49,7 @@ function deleteQuery(tableName, param) {
 function postQuery(tableName,keys) {
     let query;
         query = `INSERT INTO ${tableName} (${keys.map(key=>key)}) VALUES (${keys.map(key=>"?")})`
+        console.log(query,"ggggglllllll",keys)
     return query;
 }
 

@@ -14,7 +14,7 @@ const Login = () => {
 
     useEffect(() => {
         if (user != null) {
-            console.log(user.Username)
+            console.log(user.username)
             navigate(`/user/${user.Username}/restaurant`)
         }
         else {
@@ -40,11 +40,12 @@ const Login = () => {
             .then(response => response.json())
             .then(response => {
                 if (response.status == 200) {
+                    console.log(response.data[0])
                     const currentUser = {
-                        id: response.data[0].UserID,
+                        userId: response.data[0].UserID,
                         username: response.data[0].Username,
                         email: response.data[0].Email,
-                        phone: response.data[0].PhoneNumber,
+                        phoneNumber: response.data[0].PhoneNumber,
                         address: response.data[0].Address
                     };
                     setCurrentUser(currentUser);

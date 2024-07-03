@@ -26,22 +26,26 @@ export class UserService {
     //     return result;
     // }
     //p
-    async getUserByParams(params) {
-        // console.log(";;;;;;;;;;;;;;;;;;;;;;;",Object.keys(params)[0])
-        // console.log(Object.values(params), "values")
-        // console.log(Object.keys(params), "keys")
-        // console.log(Object.values(params)[0], "values[]")
-        // console.log(Object.keys(params)[0], "keys[]")
-        // const query = getByParamsQuery(this.tableName, [Object.keys(params)[0]]);
-        // console.log(Object.values(params)[0], "lllll")
-        // const result = await executeQuery(query, [Object.values(params)[0]]);
-        // console.log(params.Email,"params.Email")
+    async  getUserByEmail(params) {
+      
 
         const query = getByParamQuery(this.tableName, "Email");
         console.log(params.userEmail,"params.userEmail")
 
         const result = await executeQuery(query, [params.userEmail]);
         console.log(result, "rererereaa")
+        return result;
+    }
+    async getUserByParams(params){
+        // console.log(";;;;;;;;;;;;;;;;;;;;;;;",Object.keys(params)[0])
+        // console.log(Object.values(params), "values")
+        // console.log(Object.keys(params), "keys")
+        // console.log(Object.values(params)[0], "values[]")
+        // console.log(Object.keys(params)[0], "keys[]")
+        const query = getByParamsQuery(this.tableName, [Object.keys(params)[0]]);
+        // console.log(Object.values(params)[0], "lllll")
+        const result = await executeQuery(query, [Object.values(params)[0]]);
+        console.log(result)
         return result;
     }
     //p
@@ -52,10 +56,10 @@ export class UserService {
     }
     //p
     async addUser(user) {
-        delete user.password;
-        console.log("user",user)
-        const userKeys = Object.keys(user);
-        const userValues = Object.values(user);
+    //    const userObj=user.slice(0,4)
+    //     console.log("user",userObj)
+        const userKeys = Object.keys(user).slice(0,4);
+        const userValues = Object.values(user).slice(0,4);
         const query = postQuery(this.tableName, userKeys);
         const result = await executeQuery(query, userValues);
         return result;
@@ -70,6 +74,7 @@ export class UserService {
         // PasswordObj.push(id);
         // PasswordObj = Object.values(PasswordObj);
         const result = await executeQuery(query, passwordValues);
+        console.log(result,"rrrrrrrrrrrrrrr",passwordValues)
         return result;
     }
     //p

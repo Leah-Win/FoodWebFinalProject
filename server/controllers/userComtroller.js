@@ -46,14 +46,12 @@ export class UserController {
 
 
     async isExist(req, res, next) {
-        console.log("isExist")
         try {
             const service = new UserService();
-            const resultData = await service.getUserByParams(req.params);
+            const resultData = await service.getUserByEmail(req.params);
             if (resultData != [] && resultData != undefined && resultData.length != 0)
                 throw new Error(409);
             else
-                console.log("wow")
             return res.status(200).json({ status: 200 });
         }
         catch (ex) {
@@ -68,22 +66,14 @@ export class UserController {
     async signUp(req, res, next) {
         try {
             try {
-                console.log("sooooooooooooososssssss")
                 const service = new UserService();
                 const resultItem = await service.addUser(req.body);
                 const userObject = {
                     "userId": resultItem.insertId, "username": req.body.Username,
                     "email": req.body.Email, "phoneNumber": req.body.PhoneNumber, "address": req.body.Address
                 }
-                console.log("userObject",userObject)
-
-                //  const passwordService = new UserService('Passwords');
-                //   const passwordObj = [resultItem.insertId, req.body.Password]
-            const passwordObj = { "Password": "".concat(req.body.Password), "UserID":  resultItem.insertId }
-
-                const s = await service.addPassword(passwordObj);
-                console.log("s", s,)
-                //   res.status(200).json({ status: 200, data: userObject });
+                const passwordObj = { "Password":  req.body.password, "UserID":  resultItem.insertId }
+                await service.addPassword(passwordObj);
                 return res.status(200).json({ status: 200, data: userObject });
             }
             catch (ex) {
@@ -182,6 +172,20 @@ export class UserController {
         }
     }
 
+        // async addPassword(req, res, next) {
+    //     try {
+    //         const service = new UserService('Passwords');
+    //         await service.addPassword(req.body);
+    //         console.log(req.body,"kklklklkkkklklklklkolk")
+    //         return res.status(200).json({ status: 200 });
+    //     }
+    //     catch (ex) {
+    //         const err = {}
+    //         err.statusCode = 500;
+    //         err.message = ex;
+    //         next(err)
+    //     }
+    // }
     async updateUser(req, res, next) {
         try {
             const service = new UserService();
@@ -215,19 +219,7 @@ export class UserController {
 
 
 
-    async addPassword(req, res, next) {
-        try {
-            const service = new UserService('Passwords');
-            await service.addPassword(req.body);
-            return res.status(200).json({ status: 200 });
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
-        }
-    }
+
 
     async changePassword(req, res, next) {
         try {

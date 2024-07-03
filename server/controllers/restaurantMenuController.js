@@ -22,7 +22,7 @@ export class RestaurantMenuController {
 
     async getMenuItemById(req, res, next) {
         try {
-            console.log("11")
+            console.log("1111111111111")
             const service = new RestaurantMenuService();
             const resultRestaurantMenu = await service.getMenuItemById(req.params.id);
             // const resultRestaurantMenu = await service.getRestaurantMenuById(req.params.id);
