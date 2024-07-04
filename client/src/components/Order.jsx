@@ -76,39 +76,9 @@ export default function Order(){
         // return(<MyAlert/>);
       };
 
-    return (          
-<div>
-    <form className="formInvestment" onSubmit={handleSubmit}>      
-  <div class="form-group">
-    <label for="InputEnterpriseName">שם פרטי</label>
-    <input type="text" class="form-control" id="InputEnterpriseName" value={firstname} onChange={e => setFirstname(e.target.value)}/>
-  </div>
-  <div class="form-group">
-    <label for="InputEnterpriseDetailes">שם משפחה</label>
-    <input type="text" class="form-control" id="InputEnterpriseDetailes" value={lastname} onChange={e => setLastname(e.target.value)}/>
-  </div>
-  {/* <div class="form-group">
-    <label for="InputInvestment">כמה תרצה להשקיע?</label>
-    <input type="number" class="form-control" id="InputInvestment" value={investment} onChange={e => setInvestment(e.target.value)}/>
-  </div> */}
-  <div class="form-group">
-    <label for="InputEmail">כתובת מייל</label>
-    <input type="email" class="form-control" id="InputEmail" value={email} onChange={e => setEmail(e.target.value)}/>
-  </div>
-  <div class="form-group">
-    <label for="InputPhone">טלפון</label>
-    <input type="number" class="form-control" id="InputPhone" value={phone} onChange={e => setPhone(e.target.value)}/>
-  </div>
-  <div class="form-group">
-    <label for="InputDetails">הארות\הערות</label>
-    <input type="text" class="form-control" id="InputDetails" value={details} onChange={e => setDetails(e.target.value)}/>
-  </div>  
-  <button type="submit" class="btn btn-primary">לתשלום</button>
-  {/* <a href="https://www.paypal.com/cgi-bin/webscr?cmd=xclick&add=1&business=ynonperek@gmail.com&itemname=my product&item_number=123456&amount=99.99">לתשלום   </a> */}
-
-</form>
-</div>
-    );
+    return (         <>
+    </> 
+    )
   }
 
 

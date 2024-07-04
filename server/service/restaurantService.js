@@ -43,6 +43,8 @@ export class RestaurantService {
     async deleteRestaurant(id) {
         const query = deleteQuery(this.tableName, this.idName);
         const result = await executeQuery(query, [id]);
+        const childQuery=deleteQuery("restaurantMenu","RestaurantID")
+        await executeQuery(childQuery,[id]);
         return result;
     }
 

@@ -6,7 +6,6 @@ export class RestaurantController {
 
     async getAllRestaurants(req, res, next) {
         try {
-            console.log("get all r")
             const service = new RestaurantService();
             const resultItems = await service.getAllRestaurants()
             return res.status(200).json(resultItems);
@@ -21,10 +20,8 @@ export class RestaurantController {
 
     async getRestaurantById(req, res, next) {
         try {
-            console.log("11")
             const service = new RestaurantService();
             const resultItem = await service.getRestaurantById(req.params.id);
-            // const resultItem = await service.getRestaurantById(req.params.id);
             res.status(200).json(resultItem);
         }
         catch (ex) {
@@ -62,6 +59,7 @@ export class RestaurantController {
 
     async updateRestaurant(req, res, next) {
         try {
+            console.log(req.body,"+",req.params.id)
             const service = new RestaurantService();
             await service.updateRestaurant(req.body, req.params.id);
             res.status(200).json({ status: 200, data: req.params.id });
@@ -78,7 +76,7 @@ export class RestaurantController {
         try {
             const restaurantService = new RestaurantService();
             await restaurantService.deleteRestaurant(req.params.id);
-            res.status(200).json({ status: 200, data: req.params.id });
+            res.status(200).json( {data: req.params.id });
         }
         catch (ex) {
             const err = {}
