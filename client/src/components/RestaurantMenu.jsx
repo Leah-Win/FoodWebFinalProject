@@ -19,8 +19,12 @@ function RestaurantMenu() {
   const { restaurantID } = useParams();
   //console.log(restaurantID);
   const { user } = useContext(UserContext);
-  const name = JSON.parse(localStorage.getItem("currentUser")).Username;
+  //const name = JSON.parse(localStorage.getItem("currentUser")).Username;
+  // console.log(user.username)
   const [menu, setMenu] = useState([]);
+  const [orderSend, setOrderSend] = useState([]);
+
+
   const [currentMenu, setCurrentMenu] = useState([]);
   const [newItem, setNewItem] = useState(false);
   const [updateItem, setUpdateItem] = useState(false);
@@ -108,14 +112,19 @@ function RestaurantMenu() {
     setUpdateItem(true);
     setmenuDetails(item);
   }
+  //let order=[];
   const saveOrder = () => {
     let copyMenu = [];
     for (let i = 0; i < menu.length; i++) {
       copyMenu.push(menu[i]);
     }
-    let order = copyMenu.filter(item => item.Quantity != 0);
-    console.log(order)
-  }
+
+
+    copyMenu = copyMenu.filter(item => item.Quantity != 0)
+    navigate(`/user/${user.username}/order`, { state: copyMenu });
+    //setOrderSend(copyMenu.filter(item => item.Quantity != 0))
+    //alert(orderSend)
+  } 
 
   const RemoveQuantity = (item) => {
     setMenu(menu => menu.map(it => {
@@ -131,7 +140,7 @@ function RestaurantMenu() {
 
     <>
 
-      <AspectRatio variant="outlined" maxHeight={300} sx={{  height: "100%", width: "100%" }}>
+      <AspectRatio variant="outlined" maxHeight={300} sx={{ height: "100%", width: "100%" }}>
         <Box sx={{ height: "100%", width: "100%", backgroundImage: `url(${detailRestuarant.restaurant.ImageURL})`, backgroundSize: "cover" }}>
           <CardContent>
             <Typography textColor="#FFCC99" level="h1">{detailRestuarant.restaurant.Name}</Typography>
@@ -208,12 +217,13 @@ function RestaurantMenu() {
         Completion of order 🛒
         {/* <Link
           overlay
-          href={`/user/${name}/order`}
-          // state={{ infoResID: restaurant.RestaurantID }}
+          href={`/user/${user.username}/order`}
+          state={{ infoOrder: orderSend }}
           underline="none"
           sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
 
         </Link> */}
+        {/* {console.log(orderSend,"infoOrder")} */}
       </Button>
 
     </>

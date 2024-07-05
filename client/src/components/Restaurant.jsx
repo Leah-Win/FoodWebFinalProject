@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useState, useEffect } from "react";
-import { Link,useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 import { deleteReq, postReq, getReq, updateReq } from "./fetch";
 
@@ -129,12 +129,11 @@ export default function Restaurant() {
               <CardOverflow>
                 <AspectRatio ratio="2">
                   <Link
-                  
-                  to={`/user/${user.username}/${restaurant.RestaurantID}/restaurantMenu`}
-                    state={{detailRestuarant: {restaurant}}}
-                    // underline="none"
-                    // sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}
-                    >
+                    to={`/user/${user.username}/${restaurant.RestaurantID}/restaurantMenu`}
+                    state={{ detailRestuarant: { restaurant } }}
+                  // underline="none"
+                  // sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}
+                  >
                     <img src={restaurant.ImageURL}
                       loading="lazy"
                       alt="">

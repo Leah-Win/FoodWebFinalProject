@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 
 // import { UserContext } from '
 import { UserContext } from './UserProvider'
+import { useLocation, useParams } from 'react-router-dom'
+
 // import { DataTable } from 'primereact/datatable';
 // import { Column } from 'primereact/column';
 
@@ -39,7 +41,47 @@ import Link from '@mui/joy/Link';
 // import NavBar from './NavBar.js';
 // import MyAlert from './MyAlert.js';
 
-export default function Order(){  
+export default function Order(){
+
+  const [orderSend, setOrderSend] = useState([]);
+  const [countTotalAmount, setCountTotalAmount] = useState({a:"fff",count1:0});
+
+  const location = useLocation();
+
+    const  copyMenu  = location.state;
+   const getData=()=>{
+
+    //const orderSend=JSON.stringify(copyMenu)
+   // console.log(copyMenu[0].Quantity,"copyMenu",copyMenu)
+    setOrderSend(copyMenu)
+   }
+
+   //const finalAmount = () =>{   
+    //console.log(countTotalAmount,"countTotalAmount",copyMenu.length)
+
+  useEffect(() => {
+    //finalAmount()
+    let count=0
+         for (let i = 0; i < copyMenu.length; i++) {
+          count=count+(copyMenu[i].Price*copyMenu[i].Quantity)
+         setCountTotalAmount({...countTotalAmount,count1: countTotalAmount.count1+count})
+
+           console.log(count,countTotalAmount,"count")
+         }
+         //setCountTotalAmount({count1: countTotalAmount.count1+count})
+         console.log(count,countTotalAmount,"countTotalAmount")
+         
+       
+    getData()
+  //console.log(orderSend,"orderSend")
+},[])
+  
+  const { restaurantID } = useParams();
+  const { register,  reset, formState: { errors } } = useForm();
+
+  //console.log(restaurantID);
+  const { user } = useContext(UserContext);
+  //const name = JSON.parse(localStorage.getItem("currentUser")).Username;
 
       const [firstname, setFirstname] = useState('');
       const [lastname, setLastname] = useState('');
@@ -76,7 +118,20 @@ export default function Order(){
         // return(<MyAlert/>);
       };
 
-    return (         <>
+    return (        
+       <>
+       <form onSubmit={handleSubmit} className="forms">
+        <input type="text" placeholder="name" defaultValue={user.username} {...register("name")} />
+        {console.log(copyMenu[0].Quantity,"copyMenu")}
+        {/* <input type="text" placeholder="price" defaultValue={copyMenu[0].Quantity} {...register("price")} /> */}
+        <input type="text" placeholder="address" defaultValue={user.address} {...register("address")} />
+        <input type="text" placeholder="total amount" defaultValue={countTotalAmount.count1} {...register("totalAmount")} />
+      
+
+        {/* <input type="text" placeholder="imageURL" defaultValue={menuDetails.ImageURL} {...register("imageURL")} />
+        <input type="text" placeholder="details" defaultValue={menuDetails.Details} {...register("details")} />  */}
+        <button type="submit" className="BTNforns">for payment ⇒</button>
+      </form>
     </> 
     )
   }
