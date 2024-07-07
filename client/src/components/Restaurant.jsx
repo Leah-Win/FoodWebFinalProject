@@ -2,9 +2,7 @@ import React, { useRef, useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 import { deleteReq, postReq, getReq, updateReq } from "./fetch";
-
 import './css/resturants.css'
-
 import { UserContext } from './UserProvider'
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
@@ -12,7 +10,6 @@ import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Typography from '@mui/joy/Typography';
 import Grid from '@mui/joy/Grid';
-// import Link from '@mui/joy/Link';
 import Button from '@mui/joy/Button';
 
 export default function Restaurant() {
@@ -85,7 +82,6 @@ export default function Restaurant() {
     });
     setRestaurants(prevRestaurants => [...prevRestaurants, post.data]);
     setNewRestaurant(false)
-    //   reset()
   }
 
   function updateCurrentRestaurant(restaurant) {
@@ -131,8 +127,6 @@ export default function Restaurant() {
                   <Link
                     to={`/user/${user.username}/${restaurant.RestaurantID}/restaurantMenu`}
                     state={{ detailRestuarant: { restaurant } }}
-                  // underline="none"
-                  // sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}
                   >
                     <img src={restaurant.ImageURL}
                       loading="lazy"

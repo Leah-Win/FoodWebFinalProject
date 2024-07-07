@@ -122,8 +122,6 @@ function RestaurantMenu() {
 
     copyMenu = copyMenu.filter(item => item.Quantity != 0)
     navigate(`/user/${user.username}/order`, { state: copyMenu });
-    //setOrderSend(copyMenu.filter(item => item.Quantity != 0))
-    //alert(orderSend)
   } 
 
   const RemoveQuantity = (item) => {
@@ -215,15 +213,6 @@ function RestaurantMenu() {
       </Grid>
       <Button endDecorator={<KeyboardArrowRight />} onClick={() => saveOrder()} color="success">
         Completion of order 🛒
-        {/* <Link
-          overlay
-          href={`/user/${user.username}/order`}
-          state={{ infoOrder: orderSend }}
-          underline="none"
-          sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-
-        </Link> */}
-        {/* {console.log(orderSend,"infoOrder")} */}
       </Button>
 
     </>

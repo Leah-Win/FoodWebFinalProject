@@ -1,18 +1,13 @@
 
 async function postReq(route, body) {
-    console.log("fetchPostReq");
-    console.log(body)
     try {
         const response = await fetch(`http://localhost:8080/${route}`, {
             method: 'POST',
             body: JSON.stringify(body),
-            //      body: JSON.stringify({ "username": userName, "categoriesArray": categoriesArray })
             headers: { "Content-type": "application/json; charset=UTF-8", },
         })
-       // console.log("hgjghjjjjjjjjjjj ", body)
         const json = await response.json();
         const data = await json;
-        //  console.log(data.data)
         return data;
     }
     catch (err) {
@@ -24,8 +19,6 @@ async function getByReq(route, id) {
     try {
         const response = await fetch(`http://localhost:8080/${route}/${id}`, {
             method: 'GET',
-            // body: JSON.stringify(body),
-            //      body: JSON.stringify({ "username": userName, "categoriesArray": categoriesArray })
             headers: { "Content-type": "application/json; charset=UTF-8", },
         })
         const data = await response.json();
@@ -65,7 +58,6 @@ async function updateReq(route,body,id){
 
 
 async function deleteReq(route,id) {
-    // console.log(restaurantID)
     try {
         fetch(`http://localhost:8080/${route}/${id}`, {
             method: 'DELETE',

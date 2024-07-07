@@ -6,7 +6,7 @@ export class OrderController {
 
     async getAllOrders(req, res, next) {
         try {
-            console.log("get all r")
+            console.log("get all rerere")
             const service = new OrderService();
             const resultItems = await service.getAllOrders()
             return res.status(200).json(resultItems);
@@ -39,9 +39,14 @@ export class OrderController {
         try {
             console.log("addorder")
             const service = new OrderService();
+
             const resultItem = await service.addOrder(req.body);
-            const orderObject = { "OrderID": resultItem.insertId, "UserID": req.body.UserID, "MenuItemID": req.body.MenuItemID,
-             "Quantity":req.body.Quantity, "TotalAmount":req.body.TotalAmount, "OrderDate": req.body.OrderDate }
+            // const orderItem={ "OrderID": resultItem.insertId, "ItemID":req.body.itemId,"Quantity":req.body.quantity}
+            
+            // const orderItem=req.body.slice(0,2)
+            const orderObject = { "OrderID": resultItem.insertId, "UserID": req.body.UserID, 
+             "TotalAmount":req.body.TotalAmount}
+
              console.log(orderObject)
             res.status(200).json({ status: 200, data: orderObject });
         }

@@ -58,13 +58,18 @@ function putQuery(tableName,keys,IdName) {
     return query;
 }
 
+function postSomeQuery(tableName, keys) {
+    const query = `INSERT INTO ${tableName} (${keys.join(', ')}) VALUES ?`;
+    return query;
+  }
+
 function limitQuery(tableName) {
     const query = `SELECT * FROM ${tableName} LIMIT ? OFFSET ?`;
     return query;
 }
 
 export {
-    getQuery, getByIdQuery, getByParamQuery, deleteQuery, postQuery, putQuery, limitQuery,getByParamsQuery
+    getQuery, getByIdQuery, getByParamQuery,postSomeQuery, deleteQuery, postQuery, putQuery, limitQuery,getByParamsQuery
 }
 
 
