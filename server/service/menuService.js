@@ -16,14 +16,12 @@ export class MenuService {
     }
 
     async getMenuById(id) {
-        console.log("hi");
         const query = getByIdQuery(this.tableName,this.idName);
         const result = await executeQuery(query, [id]);
         return result;
     }
 
     async getMenuByParam(param) {
-        console.log("hi getMenuByPraram");
         const query = getByParamQuery(this.tableName,this.param);
         const result = await executeQuery(query, [param]);
         return result;
@@ -37,7 +35,6 @@ export class MenuService {
         const result = await executeQuery(query, menuValues);
         return result;
     }
-
 
     async updateMenu(menu, id) {
         const menuKeys = Object.keys(menu);

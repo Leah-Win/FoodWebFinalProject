@@ -28,10 +28,8 @@ const Login = () => {
         debugger
         const hash_password = generatePasswordHash(userDetails.password);
         try {
-            const post = await postReq("user/login", {Email: userDetails.email,Password: hash_password})
-            console.log(post.status)
+            const post = await postReq("user/login", { Email: userDetails.email, Password: hash_password })
             if (post) {
-                console.log(post.data[0])
                 debugger
                 const postData = post.data[0]
                 const currentUser = {
@@ -52,8 +50,7 @@ const Login = () => {
             }
         }
         catch (err) {
-            // if (err.message === "Not found")
-                alert("Incorrect details");
+            alert("Incorrect details");
             reset()
         }
     }

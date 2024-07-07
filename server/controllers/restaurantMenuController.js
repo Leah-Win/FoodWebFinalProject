@@ -6,10 +6,8 @@ export class RestaurantMenuController {
 
     async getAllRestaurantMenu(req, res, next) {
         try {
-            console.log("get all rytutrrr")
             const service = new RestaurantMenuService();
             const resultRestaurantMenu = await service.getAllRestaurantMenu()
-            console.log(resultRestaurantMenu)
             return res.status(200).json(resultRestaurantMenu);
         }
         catch (ex) {
@@ -51,12 +49,10 @@ export class RestaurantMenuController {
 
     async addMenuItem(req, res, next) {
         try {
-            console.log("addRestaurantMenu")
             const service = new RestaurantMenuService();
             const resultRestaurantMenu = await service.addMenuItem(req.body);
             const restaurantMenuObject = {"RestaurantMenuID": resultRestaurantMenu.insertId,"RestaurantID": req.body.RestaurantID, "Price": req.body.Price,
             "ImageURL": req.body.ImageURL, "Name": req.body.Name, "Details": req.body.Details, "Description": req.body.Description}
-            console.log(restaurantMenuObject)
             res.status(200).json({ data: restaurantMenuObject });
         }
         catch (ex) {
@@ -66,7 +62,6 @@ export class RestaurantMenuController {
             next(err)
         }
     }
-
 
     async updateMenuItem(req, res, next) {
         try {
@@ -81,7 +76,7 @@ export class RestaurantMenuController {
             next(err)
         }
     }
-//?
+
     async deleteMenuItem(req, res, next) {
         try {
             const RestaurantMenuervice = new RestaurantMenuService();

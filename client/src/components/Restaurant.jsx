@@ -23,7 +23,6 @@ export default function Restaurant() {
   const { register, handleSubmit, reset, formState: { errors }, } = useForm();
 
   useEffect(() => {
-    console.log(user)
     if (user == null) {
       navigate('/login')
     }
@@ -69,6 +68,11 @@ export default function Restaurant() {
     })
     setRestaurants(res)
     setUpdateRestaurant(false)
+  }
+
+  function logOut() {
+    localStorage.removeItem("currentUser");
+    navigate("/login");
   }
 
   const addRestaurant = async (details) => {
@@ -150,6 +154,8 @@ export default function Restaurant() {
             </Card>
           </Grid>))}
       </Grid >
+      <button onClick={logOut}>Log Out</button>
+
     </>
   )
 }

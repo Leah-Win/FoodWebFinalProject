@@ -16,7 +16,6 @@ export class RestaurantService {
     }
 
     async getRestaurantById(id) {
-        console.log("hi");
         const query = getByIdQuery(this.tableName,this.idName);
         const result = await executeQuery(query, [id]);
         return result;

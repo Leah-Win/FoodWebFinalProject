@@ -94,9 +94,8 @@ const Register = () => {
       password: hashPassword
     };
     const getUser = await postReq("user/signup", body);
-    console.log('================================================', getUser)
-    const currentUser = getUser.data;
-    
+    console
+    const currentUser = getUser;
     setCurrentUser(currentUser);
     document.cookie = `${getUser.data.token}`
     localStorage.setItem("currentUser", JSON.stringify(currentUser));

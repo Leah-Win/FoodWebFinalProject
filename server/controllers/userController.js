@@ -4,7 +4,6 @@ import express from "express";
 
 export class UserController {
 
-
     async login(req, res, next) {
         try {
             const service = new UserService();
@@ -56,7 +55,6 @@ export class UserController {
                 const passwordObj = { "Password":  req.body.password, "UserID":  resultItem.result.insertId }
                 await service.addPassword(passwordObj);
                 const result = {userObject, "token":resultItem.token}
-                // console.log("result!!!",result)
                 return res.status(200).json({ data: result });
             }
             catch (ex) {
@@ -75,45 +73,5 @@ export class UserController {
             next(err)
         }
     }
-    // async getUserById(req, res, next) {
-    //     try {
-    //         const service = new UserService();
-
-    //         const isExist = await service.checkIfUserExist(req.params.id);
-    //         if (isExist != []) {
-    //             const resultItem = await service.getUserById(req.params.id);
-    //             res.status(200).json(resultItem);
-    //         }
-
-    //     }
-    //     catch (ex) {
-    //         const err = {}
-    //         err.statusCode = 500;
-    //         err.message = ex;
-    //         next(err);
-    //     }
-    // }
-    
-    //
-
-
-    // async changePassword(req, res, next) {
-    //     try {
-    //         const service = new UserService('Passwords ', 'Username ');
-    //         const resultItem = await service.getItemByParam(req.body.username);
-    //         if (Object.keys(resultItem).length === 0) {
-    //             throw new Error(500);
-    //         }
-    //         else {
-    //             await service.updateItem(req.body.newPassword, req.body.username);
-    //             return res.status(200).json({ status: 200 });
-    //         }
-    //     } catch (ex) {
-    //         const err = {}
-    //         err.statusCode = (ex.message == 599) 
-    //         err.message = ex;
-    //         next(err)
-    //     }
-    // }
 
 }

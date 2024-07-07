@@ -17,14 +17,8 @@ import { Backdrop, Box } from "@mui/material";
 
 function RestaurantMenu() {
   const { restaurantID } = useParams();
-  //console.log(restaurantID);
   const { user } = useContext(UserContext);
-  //const name = JSON.parse(localStorage.getItem("currentUser")).Username;
-  // console.log(user.username)
   const [menu, setMenu] = useState([]);
-  const [orderSend, setOrderSend] = useState([]);
-
-
   const [currentMenu, setCurrentMenu] = useState([]);
   const [newItem, setNewItem] = useState(false);
   const [updateItem, setUpdateItem] = useState(false);
@@ -33,7 +27,6 @@ function RestaurantMenu() {
   const navigate = useNavigate()
   const [menuDetails, setmenuDetails] = useState(false);
   const location = useLocation();
-
   const { detailRestuarant } = location.state;
 
   useEffect(() => {
@@ -64,11 +57,13 @@ function RestaurantMenu() {
       ImageURL: details.ImageURL,
       Details: details.Details,
     }
+
     updateReq(`restaurantMenu/${restaurantID}/menuItemID`, body, menuDetails.RestaurantMenuID)
     let men = [];
     for (let i = 0; i < menu.length; i++) {
       men.push(menu[i]);
     }
+
     men.map(it => {
       if (it.RestaurantMenuID == menuDetails.RestaurantMenuID) {
         it.RestaurantMenuID = menuDetails.RestaurantMenuID;
@@ -91,8 +86,6 @@ function RestaurantMenu() {
       ImageURL: details.imageURL,
       Details: details.details,
     });
-    console.log(menu, "post", post)
-
     setMenu(prevMenu => [...prevMenu, post.data]);
     setCurrentMenu(prevMenu => [...prevMenu, post.data])
     setNewItem(false)
@@ -104,21 +97,18 @@ function RestaurantMenu() {
         it.Quantity += 1;
       return it
     }))
-    console.log(menu)
-
   }
 
   function updateCurrentItem(item) {
     setUpdateItem(true);
     setmenuDetails(item);
   }
+
   const saveOrder = () => {
     let copyMenu = [];
     for (let i = 0; i < menu.length; i++) {
       copyMenu.push(menu[i]);
     }
-
-
     copyMenu = copyMenu.filter(item => item.Quantity != 0)
     navigate(`/user/${user.userObject.username}/order`, { state: copyMenu });
   } 
@@ -144,15 +134,12 @@ function RestaurantMenu() {
             <Typography textColor="#FFCC99" level="h2">{detailRestuarant.restaurant.Description}</Typography>
             <Typography textColor="#FFCC99" level="h3">{detailRestuarant.restaurant.Address}</Typography>
             <Typography textColor="#FFCC99" level="h4">{detailRestuarant.restaurant.PhoneNumber}</Typography>
-
           </CardContent>
-
         </Box>
       </AspectRatio>
 
       {isManager ? <Button onClick={() => newItem ? setNewItem(false) : setNewItem(true)} variant="outlined" color="neutral" >New Item</Button> : <></>}
-      {
-        newItem && <form onSubmit={handleSubmit(addItem)} className="forms">
+      {newItem && <form onSubmit={handleSubmit(addItem)} className="forms">
           <input type="text" placeholder="name" defaultValue={menuDetails.Name} {...register("name")} />
           <input type="number" placeholder="price"  {...register("price")} />
           <input type="text" placeholder="imageURL"  {...register("imageURL")} />
@@ -213,7 +200,6 @@ function RestaurantMenu() {
       <Button endDecorator={<KeyboardArrowRight />} onClick={() => saveOrder()} color="success">
         Completion of order 🛒
       </Button>
-
     </>
   )
 };

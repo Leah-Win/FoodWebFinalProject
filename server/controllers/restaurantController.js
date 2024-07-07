@@ -34,7 +34,6 @@ export class RestaurantController {
 
     async addRestaurant(req, res, next) {
         try {
-            console.log("addrestaurant")
             const service = new RestaurantService();
             const resultItem = await service.addRestaurant(req.body);
             const restaurantObject = { "RestaurantID": resultItem.insertId, "Name": req.body.Name, "Address": req.body.Address, "PhoneNumber":req.body.PhoneNumber

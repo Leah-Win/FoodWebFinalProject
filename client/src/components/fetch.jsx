@@ -1,5 +1,4 @@
 let token = document.cookie;
-console.log("token", token)
 
 async function postReq(route, body) {
     try {
@@ -26,7 +25,6 @@ async function getByReq(route, id) {
                 "Content-type": "application/json; charset=UTF-8", },
         })
         const data = await response.json();
-        console.log(data)
         return data;
     }
     catch (err) {

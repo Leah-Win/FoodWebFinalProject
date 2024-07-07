@@ -1,12 +1,10 @@
 import { MenuService } from '../service/menuService.js'
 import express from "express";
 
-
 export class MenuController {
 
     async getAllMenus(req, res, next) {
         try {
-            console.log("get all r")
             const service = new MenuService();
             const resultItems = await service.getAllMenus()
             return res.status(200).json(resultItems);
@@ -21,10 +19,8 @@ export class MenuController {
 
     async getMenuById(req, res, next) {
         try {
-            console.log("11")
             const service = new MenuService();
             const resultItem = await service.getMenuById(req.params.id);
-            // const resultItem = await service.getMenuById(req.params.id);
             res.status(200).json(resultItem);
         }
         catch (ex) {
@@ -38,7 +34,6 @@ export class MenuController {
 
     async getMenuByParam(req, res, next) {
         try {
-            console.log("😊")
             const service = new MenuService();
             const resultItem = await service.getMenuByParam(req.params);
             res.status(200).json(resultItem);
@@ -54,11 +49,9 @@ export class MenuController {
 
     async addMenu(req, res, next) {
         try {
-            console.log("addMenu")
             const service = new MenuService();
             const resultItem = await service.addMenu(req.body);
             const menuObject = {"MenuID": resultItem.insertId, "Name": req.body.Name, "Description": req.body.Description}
-            console.log(menuObject)
             res.status(200).json({data: menuObject });
         }
         catch (ex) {
@@ -97,5 +90,4 @@ export class MenuController {
             next(err)
         }
     }
-
 }

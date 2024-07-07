@@ -8,60 +8,43 @@ export class UserService {
         this.param = _param;
         this.idName = "UserID";
     }
-    //?
+
     async getUser() {
         const query = getQuery(this.tableName);
         const result = await executeQuery(query);
         return result;
     }
-    //p
+    
     async getUserById(id) {
         const query = getByIdQuery(this.tableName, this.idName);
         const result = await executeQuery(query, [id]);
         return result;
     }
-    // async getUserByEmail(params) {
-    //     const query = getByParamQuery(this.tableName,params.userEmail);
-    //     const result = await executeQuery(query, [params.userEmail]);
-    //     return result;
-    // }
-    //p
+
     async  getUserByEmail(params) {
         const query = getByParamQuery(this.tableName, "Email");
-        console.log(params.userEmail,"params.userEmail")
         const result = await executeQuery(query, [params.userEmail]);
-        console.log(result, "rererereaa")
         return result;
     }
     async getUserByParams(params){
-        // console.log(";;;;;;;;;;;;;;;;;;;;;;;",Object.keys(params)[0])
-        // console.log(Object.values(params), "values")
-        // console.log(Object.keys(params), "keys")
-        // console.log(Object.values(params)[0], "values[]")
-        // console.log(Object.keys(params)[0], "keys[]")
         const query = getByParamsQuery(this.tableName, [Object.keys(params)[0]]);
-        // console.log(Object.values(params)[0], "lllll")
         const result = await executeQuery(query, [Object.values(params)[0]]);
-        console.log(result)
         return result;
     }
-    //p
+
     async checkIfUserExist(password) {
         const query = getByParamsQuery("Passwords", [Object.keys(password)][0]);
         const result = await executeQuery(query, [Object.values(password)][0]);
         return result;
     }
-    //p
+   
     async addUser(user) {
-    //    const userObj=user.slice(0,4)
-    //     console.log("user",userObj)
         const userKeys = Object.keys(user).slice(0,4);
         const userValues = Object.values(user).slice(0,4);
         const query = postQuery(this.tableName, userKeys);
         const result = await executeQuery(query, userValues);
         const token = create(result.insertId);
-        console.log(token)
-        return {'result':result, 'token':token};
+        return {result, token};
     }
 
     async addPassword(PasswordObj) {
@@ -69,7 +52,6 @@ export class UserService {
         const passwordValues = Object.values(PasswordObj);
         const query = postQuery("Passwords", passwordKeys);
         const result = await executeQuery(query, passwordValues);
-        console.log(result,"rrrrrrrrrrrrrrr",passwordValues)
         return result;
     }
 

@@ -1,5 +1,4 @@
 import express from "express";
-// import { RestaurantController } from '../controllers/restaurantsController.js'
 import { RestaurantController } from '../controllers/restaurantController.js'
 import { verifyJWTToken } from "../middleware/authenticateToken.js";
 
