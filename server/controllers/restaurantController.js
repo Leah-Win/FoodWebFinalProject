@@ -39,12 +39,6 @@ export class RestaurantController {
             const resultItem = await service.addRestaurant(req.body);
             const restaurantObject = { "RestaurantID": resultItem.insertId, "Name": req.body.Name, "Address": req.body.Address, "PhoneNumber":req.body.PhoneNumber
             , "ImageURL":req.body.ImageURL, "Description": req.body.Description }
-             console.log(restaurantObject)
-             //לשנות את הצורה בה הכנסנו סיסמה!!
-            //  console.log("body",req.body)
-            //  const passwordService = new RestaurantService('Passwords');
-            //  const s=await passwordService.addPassword(resultItem.insertId, req.body.Password);
-            //  console.log("s",s,)
             res.status(200).json({ status: 200, data: restaurantObject });
         }
         catch (ex) {
@@ -59,7 +53,6 @@ export class RestaurantController {
 
     async updateRestaurant(req, res, next) {
         try {
-            console.log(req.body,"+",req.params.id)
             const service = new RestaurantService();
             await service.updateRestaurant(req.body, req.params.id);
             res.status(200).json({ status: 200, data: req.params.id });
@@ -71,7 +64,7 @@ export class RestaurantController {
             next(err)
         }
     }
-//?
+
     async deleteRestaurant(req, res, next) {
         try {
             const restaurantService = new RestaurantService();

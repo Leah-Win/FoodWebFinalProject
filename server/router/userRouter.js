@@ -5,12 +5,12 @@ const userRouter = express.Router();
 
 const userController = new UserController()
 
-userRouter.get("/:id", userController.getUserById)
+// userRouter.get("/:id", userController.getUserById)
 userRouter.post("/login", userController.login)
 userRouter.post("/signup", userController.signUp)
 userRouter.get("/Email/:userEmail", userController.isExist)
-userRouter.delete("/:id", userController.deleteUser)
-userRouter.put("/:id", userController.updateUser)
+// userRouter.delete("/:id", userController.deleteUser)
+// userRouter.put("/:id", userController.updateUser)
 
 export{
     userRouter

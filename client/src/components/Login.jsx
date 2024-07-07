@@ -16,7 +16,7 @@ const Login = () => {
 
     useEffect(() => {
         if (user != null) {
-            navigate(`/user/${user.Username}/restaurant`)
+            navigate(`/user/${user.username}/restaurant`)
         }
         else {
             navigate("/login");
@@ -25,6 +25,7 @@ const Login = () => {
 
 
     const onSubmit = async (userDetails) => {
+        debugger
         const hash_password = generatePasswordHash(userDetails.password);
         try {
             const post = await postReq("user/login", {Email: userDetails.email,Password: hash_password})

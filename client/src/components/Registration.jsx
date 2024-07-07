@@ -103,7 +103,7 @@ const Register = () => {
     const currentUser = getUser.data;
     setCurrentUser(currentUser)
     localStorage.setItem("currentUser", JSON.stringify(currentUser))
-    navigate(`/user/${user.username}/restaurant`);
+    navigate(`/user/${moreDetails.username}/restaurant`);
   }
 
  

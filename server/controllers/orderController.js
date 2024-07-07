@@ -4,20 +4,20 @@ import express from "express";
 
 export class OrderController {
 
-    async getAllOrders(req, res, next) {
-        try {
-            console.log("get all rerere")
-            const service = new OrderService();
-            const resultItems = await service.getAllOrders()
-            return res.status(200).json(resultItems);
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err);
-        }
-    }
+    // async getAllOrders(req, res, next) {
+    //     try {
+    //         console.log("get all rerere")
+    //         const service = new OrderService();
+    //         const resultItems = await service.getAllOrders()
+    //         return res.status(200).json(resultItems);
+    //     }
+    //     catch (ex) {
+    //         const err = {}
+    //         err.statusCode = 500;
+    //         err.message = ex;
+    //         next(err);
+    //     }
+    // }
 
     async getOrderById(req, res, next) {
         try {
@@ -60,19 +60,19 @@ export class OrderController {
 
 
 
-    async updateOrder(req, res, next) {
-        try {
-            const service = new OrderService();
-            await service.updateOrder(req.body, req.params.id);
-            res.status(200).json({ status: 200, data: req.params.id });
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
-        }
-    }
+    // async updateOrder(req, res, next) {
+    //     try {
+    //         const service = new OrderService();
+    //         await service.updateOrder(req.body, req.params.id);
+    //         res.status(200).json({ status: 200, data: req.params.id });
+    //     }
+    //     catch (ex) {
+    //         const err = {}
+    //         err.statusCode = 500;
+    //         err.message = ex;
+    //         next(err)
+    //     }
+    // }
 //?
     async deleteOrder(req, res, next) {
         try {
