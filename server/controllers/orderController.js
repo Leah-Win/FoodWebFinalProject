@@ -48,7 +48,7 @@ export class OrderController {
              "TotalAmount":req.body.TotalAmount}
 
              console.log(orderObject)
-            res.status(200).json({ status: 200, data: orderObject });
+            res.status(200).json({  data: orderObject });
         }
         catch (ex) {
             const err = {}
@@ -78,7 +78,7 @@ export class OrderController {
         try {
             const orderService = new OrderService();
             await orderService.deleteOrder(req.params.id);
-            res.status(200).json({ status: 200, data: req.params.id });
+            res.status(200).json({data: req.params.id });
         }
         catch (ex) {
             const err = {}

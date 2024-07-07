@@ -1,9 +1,10 @@
 import React, { useRef, useContext, useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 import { deleteReq, postReq, getReq, updateReq } from "./fetch";
 import { UserContext } from './UserProvider'
 import { useLocation, useParams } from 'react-router-dom'
+import FormLabel from '@mui/joy/FormLabel';
 
 export default function Order(){
 const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -12,6 +13,8 @@ const copyMenu = location.state;
 const [orderSend, setOrderSend] = useState([]);
 const [countTotalAmount, setCountTotalAmount] = useState(0);
 const [items, setItems]= useState([])
+const navigate = useNavigate();
+
 const updateOrderSend = (menu) => {
   
   setItems(menu.map(item => ({ itemId: item.RestaurantMenuID, quantity: item.Quantity, price:item.Price })));
@@ -35,31 +38,38 @@ useEffect(() => {
 
   const { user } = useContext(UserContext);
         const addOrder = async (data) => {
-          alert("kijgcxfcj")
+          // alert("kijgcxfcj")
           console.log(orderSend+"  "+user.username+"orderSend.Quantity"+copyMenu)
-          debugger
           let post = await postReq("order",{
            UserID: user.userid, 
            TotalAmount: countTotalAmount,
            items: items
            });
            console.log(post)
+            window.open(`https://www.paypal.com/ncp/payment/7VZJM8ZXNGAQ6`)
+           
           }
 
     return (        
        <>
-       <h1 >Total payment:</h1>
-       <h2>{countTotalAmount}</h2>
+       <h1 >Hello {user.userObject.username} </h1>
+
+       <h1 >yours total payment:</h1>
+       <h2>{countTotalAmount}₪</h2>
        <form onSubmit={handleSubmit(addOrder)} className="forms">
-        <input type="text" placeholder="name" defaultValue={user.username} {...register("name")} /><br/>
+       <FormLabel>name</FormLabel>
+        <input type="text" placeholder="name"  required defaultValue={user.username} {...register("name")} /><br/>
+       <FormLabel>address</FormLabel>
         
         {/* <input type="text" placeholder="price" defaultValue={copyMenu[0].Quantity} {...register("price")} /> */}
-        <input type="text" placeholder="address" defaultValue={user.address} {...register("address")} /><br/>
+        <input type="text" placeholder="address" required defaultValue={user.address} {...register("address")} /><br/>
         {console.log(countTotalAmount, "totalAmount")}
 
-        <input type="text" placeholder="total amount" defaultValue={countTotalAmount} {...register("totalAmount")} /><br/>
+        {/* <input type="text" placeholder="total amount" defaultValue={countTotalAmount} {...register("totalAmount")} /><br/> */}
         {/* {/* <input type="text" placeholder="imageURL" defaultValue={menuDetails.ImageURL} {...register("imageURL")} /> */}
-        <input type="text" placeholder="phone number" defaultValue={user.phoneNumber} {...register("details")} /><br/>
+       <FormLabel>phone number</FormLabel>
+
+        <input type="text" placeholder="phone number"required  defaultValue={user.phoneNumber} {...register("details")} /><br/>
         <button type="submit" className="BTNforns">for payment ⇒</button>
       </form>
     </> 

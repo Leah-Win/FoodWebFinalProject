@@ -1,27 +1,52 @@
-import jwt from 'jsonwebtoken';
+import express from 'express'
+import 'dotenv/config'
+import jwt from 'jsonwebtoken'
 
-export const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
 
-  if (token == null){
-    res.sendStatus(401);
-    return next();
-  }
+    function create(userId) {
+        let jwtSecretKey = process.env.JWT_SECRET_KEY;
+        let data = {
+            time: Date(),
+            userId: userId,
+        }
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    return next();
-  });
+        const token = jwt.sign(data, jwtSecretKey);
+  console.log(token,"  token")
+        return token;
+    }
+    // });
+
+    // Verification of JWT
+    // app.get("/user/validateToken", (req, res) => {
+    // Tokens are generally passed in header of request
+    // Due to security reasons.
+    function verifyJWTToken(req, res, next) {
+        
+
+        let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+        let jwtSecretKey = process.env.JWT_SECRET_KEY;
+        try {
+            const token = req.header(tokenHeaderKey);
+            
+        
+        console.log(token)
+            const verified = jwt.verify(token, jwtSecretKey);
+            if (verified) {
+                console.log("succcess")
+                next();
+            } else {
+                // Access Denied
+                console.log("error")
+                return res.status(401).send(error);
+            }
+        } catch (error) {
+            // Access Denied
+            console.log("error")
+            return res.status(401).send(error);
+        }
+    }
+    // });
+export{
+    verifyJWTToken,
+    create
 }
-
-export const createToken = (req, res) => {
-  try {
-      const accessToken = jwt.sign(req.body, process.env.ACCESS_TOKEN_SECRET);
-      return accessToken;
-  } catch (error) {
-      console.error('Error creating token:', error);
-      res.status(500).json({ error: 'Internal server error' });
-  }
-};

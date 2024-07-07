@@ -10,12 +10,12 @@ export class UserController {
             const service = new UserService();
             const resultData = await service.getUserByParams(req.body);
             if (resultData == [] || resultData == undefined || resultData.length == 0)
-                throw new Error(404);
+                throw new Error(500);
             const passwordObj = { "Password": "".concat(req.body.Password), "UserID": resultData[0].UserID }
             const isExist = await service.checkIfUserExist(passwordObj);
             if (isExist == [] || isExist == undefined || isExist.length == 0)
                 throw new Error(500);
-            return res.status(200).json({ status: 200, data: resultData });
+            return res.status(200).json({data: resultData });
         }
         catch (ex) {
             const err = {};
@@ -31,9 +31,9 @@ export class UserController {
             const service = new UserService();
             const resultData = await service.getUserByEmail(req.params);
             if (resultData != [] && resultData != undefined && resultData.length != 0)
-                throw new Error(409);
+                throw new Error(500);
             else
-            return res.status(200).json({ status: 200 });
+            return res.status(200).json();
         }
         catch (ex) {
             const err = {};
@@ -50,16 +50,18 @@ export class UserController {
                 const service = new UserService();
                 const resultItem = await service.addUser(req.body);
                 const userObject = {
-                    "userId": resultItem.insertId, "username": req.body.Username,
+                    "userId": resultItem.result.insertId, "username": req.body.Username,
                     "email": req.body.Email, "phoneNumber": req.body.PhoneNumber, "address": req.body.Address
                 }
-                const passwordObj = { "Password":  req.body.password, "UserID":  resultItem.insertId }
+                const passwordObj = { "Password":  req.body.password, "UserID":  resultItem.result.insertId }
                 await service.addPassword(passwordObj);
-                return res.status(200).json({ status: 200, data: userObject });
+                const result = {userObject, "token":resultItem.token}
+                // console.log("result!!!",result)
+                return res.status(200).json({ data: result });
             }
             catch (ex) {
                 const err = {};
-                err.statusCode = (ex.message == 500) 
+                err.statusCode = (ex.message == 500)    
                 err.message = ex.message;
                 next(err)
             }

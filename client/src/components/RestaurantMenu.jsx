@@ -112,7 +112,6 @@ function RestaurantMenu() {
     setUpdateItem(true);
     setmenuDetails(item);
   }
-  //let order=[];
   const saveOrder = () => {
     let copyMenu = [];
     for (let i = 0; i < menu.length; i++) {
@@ -121,7 +120,7 @@ function RestaurantMenu() {
 
 
     copyMenu = copyMenu.filter(item => item.Quantity != 0)
-    navigate(`/user/${user.username}/order`, { state: copyMenu });
+    navigate(`/user/${user.userObject.username}/order`, { state: copyMenu });
   } 
 
   const RemoveQuantity = (item) => {

@@ -30,8 +30,9 @@ const Login = () => {
         try {
             const post = await postReq("user/login", {Email: userDetails.email,Password: hash_password})
             console.log(post.status)
-            if (post.status == 200) {
+            if (post) {
                 console.log(post.data[0])
+                debugger
                 const postData = post.data[0]
                 const currentUser = {
                     userId: postData.UserID,
@@ -41,9 +42,10 @@ const Login = () => {
                     address: postData.Address
                 };
                 setCurrentUser(currentUser);
+                // document.cookie = `${getUser.data.token}`
                 localStorage.setItem("currentUser", JSON.stringify(currentUser));
                 reset();
-                navigate(`/user/${post.Username}/restaurant`);
+                navigate(`/user/${post.username}/restaurant`);
             }
             else {
                 throw new Error(post.message)

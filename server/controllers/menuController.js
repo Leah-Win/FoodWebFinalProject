@@ -59,7 +59,7 @@ export class MenuController {
             const resultItem = await service.addMenu(req.body);
             const menuObject = {"MenuID": resultItem.insertId, "Name": req.body.Name, "Description": req.body.Description}
             console.log(menuObject)
-            res.status(200).json({ status: 200, data: menuObject });
+            res.status(200).json({data: menuObject });
         }
         catch (ex) {
             const err = {}
@@ -74,7 +74,7 @@ export class MenuController {
         try {
             const service = new MenuService();
             await service.updateMenu(req.body, req.params.id);
-            res.status(200).json({ status: 200, data: req.params.id });
+            res.status(200).json({  data: req.params.id });
         }
         catch (ex) {
             const err = {}
@@ -88,7 +88,7 @@ export class MenuController {
         try {
             const menuService = new MenuService();
             await menuService.deleteMenu(req.params.id);
-            res.status(200).json({ status: 200, data: req.params.id });
+            res.status(200).json({  data: req.params.id });
         }
         catch (ex) {
             const err = {}

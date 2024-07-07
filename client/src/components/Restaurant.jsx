@@ -125,7 +125,7 @@ export default function Restaurant() {
               <CardOverflow>
                 <AspectRatio ratio="2">
                   <Link
-                    to={`/user/${user.username}/${restaurant.RestaurantID}/restaurantMenu`}
+                    to={`/user/${user.userObject.username}/${restaurant.RestaurantID}/restaurantMenu`}
                     state={{ detailRestuarant: { restaurant } }}
                   >
                     <img src={restaurant.ImageURL}

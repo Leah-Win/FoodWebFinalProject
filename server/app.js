@@ -10,22 +10,19 @@ import { restaurantRouter } from './router/restaurantRouter.js';
 //import { menuRouter} from './router/menuRouter.js'
 import { restaurantMenuRouter} from './router/restaurantMenuRouter.js';
 import { orderRouter } from './router/OrderRouter.js';
+import { verifyJWTToken } from './middleware/authenticateToken.js';
 
 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// import 'dotenv/config'
-
-
 const app = express();
 app.use(express.json());
 app.use(cors());
-// app.use(verifyToken)
-// app.use('/i',express.static(""))
+// import 'dotenv/config'
+
 app.use('/user', userRouter);
-// app.use('/forms', formsRouter);
 app.use('/restaurant', restaurantRouter);
 app.use('/restaurantMenu', restaurantMenuRouter);
 app.use('/order', orderRouter);

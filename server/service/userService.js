@@ -1,6 +1,6 @@
 import { executeQuery } from './db.js';
 import { getQuery, getByIdQuery, getByParamQuery, getByParamsQuery, deleteQuery, putQuery, postQuery, limitQuery } from './query.js'
-
+import { create } from '../middleware/authenticateToken.js';
 
 export class UserService {
     constructor(_tableName, _param = null) {
@@ -27,11 +27,8 @@ export class UserService {
     // }
     //p
     async  getUserByEmail(params) {
-      
-
         const query = getByParamQuery(this.tableName, "Email");
         console.log(params.userEmail,"params.userEmail")
-
         const result = await executeQuery(query, [params.userEmail]);
         console.log(result, "rererereaa")
         return result;
@@ -62,22 +59,20 @@ export class UserService {
         const userValues = Object.values(user).slice(0,4);
         const query = postQuery(this.tableName, userKeys);
         const result = await executeQuery(query, userValues);
-        return result;
+        const token = create(result.insertId);
+        console.log(token)
+        return {'result':result, 'token':token};
     }
-    //p
+
     async addPassword(PasswordObj) {
         const passwordKeys = Object.keys(PasswordObj);
         const passwordValues = Object.values(PasswordObj);
-        // PasswordObj = Object.values(PasswordObj);
         const query = postQuery("Passwords", passwordKeys);
-        // const PasswordObj = (typeof password === 'object')? Object.values(password): [password];
-        // PasswordObj.push(id);
-        // PasswordObj = Object.values(PasswordObj);
         const result = await executeQuery(query, passwordValues);
         console.log(result,"rrrrrrrrrrrrrrr",passwordValues)
         return result;
     }
-    //p
+
     async updateUser(user, id) {
         const userKeys = Object.keys(user);
         user = (typeof user === 'object') ? Object.values(user) : [user];
@@ -86,13 +81,13 @@ export class UserService {
         const result = await executeQuery(query, user);
         return result;
     }
-    //p
+
     async deleteUser(id) {
         const query = deleteQuery(this.tableName, this.idName);
         const result = await executeQuery(query, [id]);
         return result;
     }
-    //p??
+
     async limitGet(start) {
         const query = limitQuery(this.tableName);
         const result = await executeQuery(query, [this.param, start]);
