@@ -9,10 +9,10 @@ const Login = () => {
     const navigate = useNavigate();
     const { user, setCurrentUser } = useContext(UserContext);
     const { register, handleSubmit, reset, } = useForm({ defaultValues: { email: '', password: '' } });
-    const generatePasswordHash = (password) => {
-        const hashedPassword = CryptoJS.SHA256(password).toString();
-        return hashedPassword;
-    };
+    // const generatePasswordHash = (password) => {
+    //     const hashedPassword = CryptoJS.SHA256(password).toString();
+    //     return hashedPassword;
+    // };
 
     useEffect(() => {
         if (user != null) {
@@ -26,9 +26,11 @@ const Login = () => {
 
     const onSubmit = async (userDetails) => {
         debugger
-        const hash_password = generatePasswordHash(userDetails.password);
+        // const hash_password = generatePasswordHash(userDetails.password);
         try {
-            const post = await postReq("user/login", { Email: userDetails.email, Password: hash_password })
+            const post = await postReq("user/login", { Email: userDetails.email, Password: userDetails.password })
+            // const post = await postReq("user/login", { Email: userDetails.email, Password: hash_password })
+
             if (post) {
                 debugger
                 const postData = post.data[0]

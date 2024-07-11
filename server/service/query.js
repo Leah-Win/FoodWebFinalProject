@@ -46,6 +46,8 @@ function limitQuery(tableName) {
     return query;
 }
 
+
+
 export {
     getQuery, getByIdQuery, getByParamQuery,postSomeQuery, deleteQuery, postQuery, putQuery, limitQuery,getByParamsQuery
 }

@@ -22,7 +22,7 @@ function RestaurantMenu() {
   const [currentMenu, setCurrentMenu] = useState([]);
   const [newItem, setNewItem] = useState(false);
   const [updateItem, setUpdateItem] = useState(false);
-  const [isManager, setIsManager] = useState(false);
+  const [isManager, setIsManager] = useState(true);
   const { register, handleSubmit, reset, formState: { errors }, } = useForm();
   const navigate = useNavigate()
   const [menuDetails, setmenuDetails] = useState(false);
@@ -110,7 +110,7 @@ function RestaurantMenu() {
       copyMenu.push(menu[i]);
     }
     copyMenu = copyMenu.filter(item => item.Quantity != 0)
-    navigate(`/user/${user.userObject.username}/order`, { state: copyMenu });
+    navigate(`/user/${user.username}/order`, { state: copyMenu });
   } 
 
   const RemoveQuantity = (item) => {

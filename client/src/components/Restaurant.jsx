@@ -15,7 +15,7 @@ import Button from '@mui/joy/Button';
 export default function Restaurant() {
   const [restaurants, setRestaurants] = useState([]);
   const [updateRestaurant, setUpdateRestaurant] = useState(false);
-  const [isManager, setIsManager] = useState(false);
+  const [isManager, setIsManager] = useState(true);
   const [newRestaurant, setNewRestaurant] = useState(false);
   const [restaurantDetails, setRestaurantDetails] = useState(false);
   const { user } = useContext(UserContext);
@@ -129,7 +129,7 @@ export default function Restaurant() {
               <CardOverflow>
                 <AspectRatio ratio="2">
                   <Link
-                    to={`/user/${user.userObject.username}/${restaurant.RestaurantID}/restaurantMenu`}
+                    to={`/user/${user.username}/${restaurant.RestaurantID}/restaurantMenu`}
                     state={{ detailRestuarant: { restaurant } }}
                   >
                     <img src={restaurant.ImageURL}

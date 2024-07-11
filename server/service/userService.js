@@ -42,7 +42,6 @@ export class UserService {
         const userKeys = Object.keys(user).slice(0,4);
         const userValues = Object.values(user).slice(0,4);
         const query = postQuery(this.tableName, userKeys);
-        const result = await executeQuery(query, userValues);
         const token = create(result.insertId);
         return {result, token};
     }

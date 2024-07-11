@@ -11,7 +11,6 @@ import Order from './Order.jsx';
 
 function App() {
 
-  const { id } = useParams();
   return (
     <>
       <Router>
