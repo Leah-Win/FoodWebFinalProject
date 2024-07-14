@@ -19,33 +19,7 @@ const Login = () => {
 
 
     const onSubmit = async (userDetails) => {
-        debugger
-        // const hash_password = generatePasswordHash(userDetails.password);
         try {
-            const post = await postReq("user/login", { Email: userDetails.email, Password: userDetails.password })
-            // const post = await postReq("user/login", { Email: userDetails.email, Password: hash_password })
-
-            if (post) {
-                debugger
-                const postData = post.data[0]
-                const currentUser = {
-                    userId: postData.UserID,
-                    username: postData.Username,
-                    email: postData.Email,
-                    phoneNumber: postData.PhoneNumber,
-                    address: postData.Address
-                };
-                setCurrentUser(currentUser);
-                // document.cookie = `${getUser.data.token}`
-                localStorage.setItem("currentUser", JSON.stringify(currentUser));
-                reset();
-                navigate(`/user/${post.username}/restaurant`);
-            }
-            else {
-                throw new Error(post.message)
-            }
-        }
-        catch (err) {
             const post = await postReq("user/login", { email: userDetails.email, password: userDetails.password })
             setCurrentUser(post.data[0]);
             localStorage.setItem("currentUser", JSON.stringify(post.data[0]));

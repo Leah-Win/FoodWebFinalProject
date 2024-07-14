@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState} from 'react'
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes, useNavigate, Navigate, useParams } from 'react-router-dom';
@@ -10,7 +8,7 @@ import RestaurantMenu from './RestaurantMenu.jsx';
 import Order from './Order.jsx';
 
 function App() {
-  
+
   return (
     <>
       <Router>
