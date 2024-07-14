@@ -4,7 +4,6 @@ import CryptoJS from 'crypto-js';
 
 
 export class UserController {
-
     async login(req, res, next) {
         try {
             const service = new UserService();

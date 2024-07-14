@@ -15,7 +15,7 @@ import Button from '@mui/joy/Button';
 export default function Restaurant() {
   const [restaurants, setRestaurants] = useState([]);
   const [updateRestaurant, setUpdateRestaurant] = useState(false);
-  const [isManager, setIsManager] = useState(false);
+  const [isManager, setIsManager] = useState(true);
   const [newRestaurant, setNewRestaurant] = useState(false);
   const [restaurantDetails, setRestaurantDetails] = useState(false);
   const { user, setCurrentUser } = useContext(UserContext);
