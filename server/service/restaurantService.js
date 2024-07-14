@@ -31,6 +31,7 @@ export class RestaurantService {
 
 
     async updateRestaurant(restaurant, id) {
+
         const restaurantKeys = Object.keys(restaurant);
         restaurant = (typeof restaurant === 'object')? Object.values(restaurant): [restaurant];
         restaurant.push(id);

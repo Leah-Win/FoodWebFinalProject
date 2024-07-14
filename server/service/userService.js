@@ -1,5 +1,5 @@
 import { executeQuery } from './db.js';
-import { getQuery, getByIdQuery, getByParamQuery, getByParamsQuery, deleteQuery, putQuery, postQuery, limitQuery } from './query.js'
+import { getQuery, getByIdQuery, getByParamQuery, getByParamsQuery, deleteQuery, putQuery, postQuery, limitQuery,insetUserDatails } from './query.js'
 import { create } from '../middleware/authenticateToken.js';
 
 export class UserService {
@@ -39,20 +39,12 @@ export class UserService {
     }
    
     async addUser(user) {
-        const userKeys = Object.keys(user).slice(0,4);
-        const userValues = Object.values(user).slice(0,4);
+        const userKeys = Object.keys(user);
+        const userValues = Object.values(user);
         const query = postQuery(this.tableName, userKeys);
         const result = await executeQuery(query, userValues);
-        const token = create(result.insertId);
-        return {result, token};
-    }
-
-    async addPassword(PasswordObj) {
-        const passwordKeys = Object.keys(PasswordObj);
-        const passwordValues = Object.values(PasswordObj);
-        const query = postQuery("Passwords", passwordKeys);
-        const result = await executeQuery(query, passwordValues);
-        return result;
+        // const token = create(result.insertId);
+        return {result};
     }
 
     async updateUser(user, id) {

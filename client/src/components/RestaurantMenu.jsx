@@ -17,7 +17,7 @@ import { Backdrop, Box } from "@mui/material";
 
 function RestaurantMenu() {
   const { restaurantID } = useParams();
-  const { user } = useContext(UserContext);
+  const { user, setCurrentUser } = useContext(UserContext);
   const [menu, setMenu] = useState([]);
   const [currentMenu, setCurrentMenu] = useState([]);
   const [newItem, setNewItem] = useState(false);
@@ -38,57 +38,74 @@ function RestaurantMenu() {
 
 
   const getData = async () => {
-    const data = await getByReq("restaurantMenu/RestaurantID", restaurantID);
-    const menu = data.map(obj => ({ ...obj, "Quantity": 0 }))
-    setMenu(menu);
-    setCurrentMenu(data);
+    try {
+      const data = await getByReq("restaurantMenu/RestaurantID", restaurantID);
+      const menu = data.map(obj => ({ ...obj, "Quantity": 0 }))
+      setMenu(menu);
+      setCurrentMenu(data);
+      user.isManager ? setIsManager(true) : setIsManager(false)
+    }
+    catch (err) {
+      alert("Unable to enter data, please try again")
+    }
+
   }
 
   const deleteMenuItem = async (menuItemID) => {
-    await deleteReq(`restaurantMenu/${restaurantID}/menuItemID`, menuItemID)
-    setCurrentMenu(menuItem => menuItem.filter((item) => item.RestaurantMenuID !== menuItemID))
-    setMenu(menuItem => menuItem.filter((item) => item.RestaurantMenuID !== menuItemID));
+    try {
+      await deleteReq(`restaurantMenu/${restaurantID}/menuItemID`, menuItemID)
+      setCurrentMenu(menuItem => menuItem.filter((item) => item.RestaurantMenuID !== menuItemID))
+      setMenu(menuItem => menuItem.filter((item) => item.RestaurantMenuID !== menuItemID));
+    }
+    catch (err) {
+      alert("Not successful, please try again.")
+    }
+
   }
 
   const UpdateMenuItem = async (details) => {
     const body = {
       Name: details.name,
-      Price: details.Price,
-      ImageURL: details.ImageURL,
-      Details: details.Details,
-    }
-
-    updateReq(`restaurantMenu/${restaurantID}/menuItemID`, body, menuDetails.RestaurantMenuID)
-    let men = [];
-    for (let i = 0; i < menu.length; i++) {
-      men.push(menu[i]);
-    }
-
-    men.map(it => {
-      if (it.RestaurantMenuID == menuDetails.RestaurantMenuID) {
-        it.RestaurantMenuID = menuDetails.RestaurantMenuID;
-        it.Name = details.name;
-        it.Price = details.price;
-        it.ImageURL = details.imageURL;
-        it.Details = details.details;
-      }
-    })
-    setMenu(men);
-    setCurrentMenu(men)
-    setUpdateItem(false)
-  }
-
-  const addItem = async (details) => {
-    let post = await postReq(`restaurantMenu/${restaurantID}`, {
-      restaurantID: restaurantID,
-      Name: details.name,
       Price: details.price,
       ImageURL: details.imageURL,
       Details: details.details,
-    });
-    setMenu(prevMenu => [...prevMenu, post.data]);
-    setCurrentMenu(prevMenu => [...prevMenu, post.data])
-    setNewItem(false)
+    };
+    try {
+      await updateReq(`restaurantMenu/${restaurantID}/menuItemID`, body, menuDetails.RestaurantMenuID);
+
+      const updatedMenu = [...menu];
+      const index = updatedMenu.findIndex(it => it.RestaurantMenuID === menuDetails.RestaurantMenuID);
+
+      if (index !== -1) {
+        updatedMenu[index] = { ...updatedMenu[index], ...body };
+      }
+
+      setMenu(updatedMenu);
+      setCurrentMenu(updatedMenu);
+      setUpdateItem(false);
+    }
+    catch (err) {
+      alert("Not successful, please try again.")
+    }
+
+  };
+  const addItem = async (details) => {
+    try {
+      let post = await postReq(`restaurantMenu/${restaurantID}`, {
+        restaurantID: restaurantID,
+        Name: details.name,
+        Price: details.price,
+        ImageURL: details.imageURL,
+        Details: details.details,
+      });
+      setMenu(prevMenu => [...prevMenu, post.data]);
+      setCurrentMenu(prevMenu => [...prevMenu, post.data])
+      setNewItem(false)
+    }
+    catch (err) {
+      alert("Not successful, please try again.")
+    }
+
   }
 
   const AddQuantity = (item) => {
@@ -110,8 +127,12 @@ function RestaurantMenu() {
       copyMenu.push(menu[i]);
     }
     copyMenu = copyMenu.filter(item => item.Quantity != 0)
-    navigate(`/user/${user.userObject.username}/order`, { state: copyMenu });
-  } 
+    console.log(copyMenu)
+    if (copyMenu.length == 0)
+      alert("There are no items selected")
+    else
+      navigate(`/user/${user.username}/order`, { state: copyMenu });
+  }
 
   const RemoveQuantity = (item) => {
     setMenu(menu => menu.map(it => {
@@ -122,6 +143,15 @@ function RestaurantMenu() {
       return it;
     })
     )
+  }
+
+
+  function logOut() {
+    if (confirm(user.username + ", are you sure you want to log out? ")) {
+      localStorage.removeItem("currentUser");
+      setCurrentUser(null);
+      navigate("/login");
+    }
   }
   return (
 
@@ -140,12 +170,12 @@ function RestaurantMenu() {
 
       {isManager ? <Button onClick={() => newItem ? setNewItem(false) : setNewItem(true)} variant="outlined" color="neutral" >New Item</Button> : <></>}
       {newItem && <form onSubmit={handleSubmit(addItem)} className="forms">
-          <input type="text" placeholder="name" defaultValue={menuDetails.Name} {...register("name")} />
-          <input type="number" placeholder="price"  {...register("price")} />
-          <input type="text" placeholder="imageURL"  {...register("imageURL")} />
-          <input type="text" placeholder="details"  {...register("details")} />
-          <button type="submit" className="BTNforns">Add Item</button>
-        </form>
+        <input type="text" placeholder="name" defaultValue={menuDetails.Name} {...register("name")} />
+        <input type="number" placeholder="price"  {...register("price")} />
+        <input type="text" placeholder="imageURL"  {...register("imageURL")} />
+        <input type="text" placeholder="details"  {...register("details")} />
+        <button type="submit" className="BTNforns">Add Item</button>
+      </form>
       }
 
 
@@ -200,7 +230,9 @@ function RestaurantMenu() {
       <Button endDecorator={<KeyboardArrowRight />} onClick={() => saveOrder()} color="success">
         Completion of order 🛒
       </Button>
+      <Button onClick={logOut}>Log Out</Button>
     </>
+
   )
 };
 

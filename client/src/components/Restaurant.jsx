@@ -18,7 +18,7 @@ export default function Restaurant() {
   const [isManager, setIsManager] = useState(false);
   const [newRestaurant, setNewRestaurant] = useState(false);
   const [restaurantDetails, setRestaurantDetails] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate()
   const { register, handleSubmit, reset, formState: { errors }, } = useForm();
 
@@ -30,18 +30,32 @@ export default function Restaurant() {
   }, []);
 
   useEffect(() => {
-  }, [restaurants]);
+  }, [restaurants, isManager]);
 
   const getData = async () => {
-    const data = await getReq("restaurant");
-    setRestaurants(data);
+    try {
+      const data = await getReq("restaurant");
+      setRestaurants(data);
+      user.isManager ? setIsManager(true) : setIsManager(false);
+    }
+    catch (err) {
+      alert("Unable to enter data, please try again.")
+    }
   };
-
-  const deleteRestaurant = async (restaurantID) => {
-    await deleteReq("restaurant", restaurantID)
-    setRestaurants(restaurant => restaurant.filter((item) => item.RestaurantID !== restaurantID)
-    )
+  
+  function logOut() {
+    if (confirm(user.username + ", are you sure you want to log out? ")) {
+      localStorage.removeItem("currentUser");
+      setCurrentUser(null);
+      navigate("/login");
+    }
   }
+  function updateCurrentRestaurant(restaurant) {
+    setUpdateRestaurant(true);
+    setRestaurantDetails(restaurant);
+  }
+
+
 
   const UpdateRestaurnt = async (details) => {
     const body = {
@@ -50,48 +64,54 @@ export default function Restaurant() {
       PhoneNumber: details.phoneNumber,
       ImageURL: details.imageURL,
       Description: details.description
-    }
-    updateReq("restaurant", body, restaurantDetails.RestaurantID)
-    let res = [];
-    for (let i = 0; i < restaurants.length; i++) {
-      res.push(restaurants[i]);
-    }
-    res.map(it => {
-      if (it.RestaurantID == restaurantDetails.RestaurantID) {
-        it.RestaurantID = restaurantDetails.RestaurantID;
-        it.Name = details.name;
-        it.Address = details.address;
-        it.PhoneNumber = details.phoneNumber;
-        it.ImageURL = details.imageURL;
-        it.Description = details.description;
-      }
-    })
-    setRestaurants(res)
-    setUpdateRestaurant(false)
-  }
+    };
 
-  function logOut() {
-    localStorage.removeItem("currentUser");
-    navigate("/login");
+    try {
+      await updateReq("restaurant", body, restaurantDetails.RestaurantID);
+      const updatedRestaurants = [...restaurants];
+      const index = updatedRestaurants.findIndex(it => it.RestaurantID === restaurantDetails.RestaurantID);
+
+      if (index !== -1) {
+        updatedRestaurants[index] = { ...updatedRestaurants[index], ...body };
+      }
+      setRestaurants(updatedRestaurants);
+      setUpdateRestaurant(false);
+    }
+    catch (err) {
+      alert("Not successful, please try again.")
+    }
+  };
+
+  const deleteRestaurant = async (restaurantID) => {
+    try {
+      await deleteReq("restaurant", restaurantID)
+      setRestaurants(restaurant => restaurant.filter((item) => item.RestaurantID !== restaurantID)
+      )
+    }
+    catch (err) {
+      alert("Not successful, please try again.")
+    }
+
   }
 
   const addRestaurant = async (details) => {
-
-    let post = await postReq("restaurant", {
-      Name: details.name,
-      Address: details.address,
-      PhoneNumber: details.phoneNumber,
-      ImageURL: details.imageURL,
-      Description: details.description
-    });
-    setRestaurants(prevRestaurants => [...prevRestaurants, post.data]);
-    setNewRestaurant(false)
+    try {
+      let post = await postReq("restaurant", {
+        Name: details.name,
+        Address: details.address,
+        PhoneNumber: details.phoneNumber,
+        ImageURL: details.imageURL,
+        Description: details.description
+      });
+      setRestaurants(prevRestaurants => [...prevRestaurants, post.data]);
+      setNewRestaurant(false)
+    }
+    catch (err) {
+      alert("Not successful, please try again.")
+    }
   }
 
-  function updateCurrentRestaurant(restaurant) {
-    setUpdateRestaurant(true);
-    setRestaurantDetails(restaurant);
-  }
+
 
   return (
     <>
@@ -129,7 +149,7 @@ export default function Restaurant() {
               <CardOverflow>
                 <AspectRatio ratio="2">
                   <Link
-                    to={`/user/${user.userObject.username}/${restaurant.RestaurantID}/restaurantMenu`}
+                    to={`/user/${user.username}/${restaurant.RestaurantID}/restaurantMenu`}
                     state={{ detailRestuarant: { restaurant } }}
                   >
                     <img src={restaurant.ImageURL}
@@ -155,7 +175,6 @@ export default function Restaurant() {
           </Grid>))}
       </Grid >
       <button onClick={logOut}>Log Out</button>
-
     </>
   )
 }

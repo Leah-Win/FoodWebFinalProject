@@ -16,9 +16,7 @@ const [items, setItems]= useState([])
 const navigate = useNavigate();
 
 const updateOrderSend = (menu) => {
-  
   setItems(menu.map(item => ({ itemId: item.RestaurantMenuID, quantity: item.Quantity, price:item.Price })));
-
   setOrderSend(menu);
   let totalAmount = 0;
   for (let i = 0; i < menu.length; i++) {
@@ -39,7 +37,7 @@ useEffect(() => {
 
     return (        
        <>
-       <h1 >Hello {user.userObject.username} </h1>
+       <h1 >Hello {user.username} </h1>
        <h1 >yours total payment:</h1>
        <h2>{countTotalAmount} ₪</h2>
        <form onSubmit={handleSubmit(addOrder)} className="forms">

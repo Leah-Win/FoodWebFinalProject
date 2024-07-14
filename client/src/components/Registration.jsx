@@ -3,18 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 import { UserContext } from './UserProvider'
 import { getByReq, postReq } from "./fetch";
-import CryptoJS from 'crypto-js';
 
 const Register = () => {
 
   const [isExist, setIsExist] = useState(true);
   const { user, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
-
-  const generatePasswordHash = (password) => {
-    const hashedPassword = CryptoJS.SHA256(password).toString();
-    return hashedPassword;
-  };
 
   const IntegrityChecks = {
     username: {
@@ -67,49 +61,56 @@ const Register = () => {
     }
   }, []);
 
+  // const signUp = async (userDetails) => {
+  //   if (userDetails.password !== userDetails.verifyPassword) {
+  //     alert('Error! Passwords do not match.');
+  //     reset();
+  //     return;
+  //   }
+  //   try {
+  //     const isExist = await getByReq(`user/Email/${userDetails.email}`);
+  //     reset();
+  //     // setIsExist(false);
+  //     setCurrentUser(userDetails);
+  //   } catch (err) {
+  //     alert('Incorrect details');
+  //     reset();
+  //   }
+  // };
+
   const signUp = async (userDetails) => {
     if (userDetails.password !== userDetails.verifyPassword) {
       alert('Error! Passwords do not match.');
       reset();
       return;
     }
-    const isExist = await getByReq(`user/Email/${userDetails.email}`);
-    if (isExist) {
-      alert('Incorrect details');
-      reset();
-      return;
-    }
-    reset();
-    setIsExist(false);
-    setCurrentUser(userDetails);
-  };
-
-  const userData = async (moreDetails) => {
-    const hashPassword = generatePasswordHash(user.password);
     const body = {
-      Username: moreDetails.username,
-      Email: user.email,
-      PhoneNumber: moreDetails.phoneNumber,
-      Address: moreDetails.address,
-      password: hashPassword
+      username: userDetails.username,
+      email: userDetails.email,
+      password: userDetails.password
     };
-    const getUser = await postReq("user/signup", body);
-    console
-    const currentUser = getUser;
-    setCurrentUser(currentUser);
-    document.cookie = `${getUser.data.token}`
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    navigate(`/user/${moreDetails.username}/restaurant`);
+    try {
+      const currentUser = await postReq("user/signup", body);
+      // const currentUser = getUser;
+      console.log(currentUser[0],"currentUser");
+      setCurrentUser(currentUser);
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      navigate(`/user/${userDetails.username}/restaurant`);
+    } catch (err) {
+      alert("Not successful, please try again.")
+    }
   };
 
   return (
     <>
       <h3>REGISTER</h3>
-      {isExist ? (
         <form onSubmit={handleSubmit(signUp)} className="forms">
           <input type="email" placeholder="Email" {...register("email", IntegrityChecks.email)} /><br />
           {errors.email && (
             <p className="errorMsg">{errors.email.message}</p>)}
+            <input type="text" placeholder="Username" {...register("username", IntegrityChecks.username)} /><br />
+          {errors.username && (
+            <p className="errorMsg">{errors.username.message}</p>)}
           <input type="password" placeholder="Password" {...register("password", IntegrityChecks.password)} /><br />
           {errors.password && (
             <p className="errorMsg">{errors.password.message}</p>)}
@@ -119,23 +120,24 @@ const Register = () => {
           <button type="submit" className="BTNforns">Submit</button><br />
           <Link to="/login">Already registered?</Link>
         </form>
-      ) : (
-        <form onSubmit={handleSubmit(userData)} className="forms">
-          <input type="text" placeholder="Username" {...register("username", IntegrityChecks.username)} /><br />
-          {errors.username && (
-            <p className="errorMsg">{errors.username.message}</p>)}
-          <input type="text" placeholder="Phone Number" {...register("phoneNumber", IntegrityChecks.phoneNumber)} /><br />
-          {errors.phoneNumber && (
-            <p className="errorMsg">{errors.phoneNumber.message}</p>)}
-          <input type="text" placeholder="Address" {...register("address", IntegrityChecks.address)} /><br />
-          {errors.address && (
-            <p className="errorMsg">{errors.address.message}</p>)}<br />
-          <button type="submit" className="BTNforns">Register</button>
-        </form>
-      )}
+      
     </>
   );
 };
 
 export default Register;
 
+// : (
+//   <form onSubmit={handleSubmit(userData)} className="forms">
+//     <input type="text" placeholder="Username" {...register("username", IntegrityChecks.username)} /><br />
+//     {errors.username && (
+//       <p className="errorMsg">{errors.username.message}</p>)}
+//     <input type="text" placeholder="Phone Number" {...register("phoneNumber", IntegrityChecks.phoneNumber)} /><br />
+//     {errors.phoneNumber && (
+//       <p className="errorMsg">{errors.phoneNumber.message}</p>)}
+//     <input type="text" placeholder="Address" {...register("address", IntegrityChecks.address)} /><br />
+//     {errors.address && (
+//       <p className="errorMsg">{errors.address.message}</p>)}<br />
+//     <button type="submit" className="BTNforns">Register</button>
+//   </form>
+// )}

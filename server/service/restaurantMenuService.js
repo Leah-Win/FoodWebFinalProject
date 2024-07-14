@@ -1,8 +1,8 @@
 import { executeQuery } from './db.js';
 import { getQuery, getByIdQuery, deleteQuery, putQuery,getByParamQuery, postQuery, limitQuery } from './query.js'
 
-
 export class RestaurantMenuService {
+    
     constructor(_tableName, _param=null) {
         this.tableName = "RestaurantMenu";
         this.param = _param;
@@ -34,7 +34,6 @@ export class RestaurantMenuService {
         const result = await executeQuery(query, restaurantMenuValues);
         return result;
     }
-
 
     async updateMenuItem(restaurantMenu, id) {
         const restaurantMenuKeys = Object.keys(restaurantMenu);

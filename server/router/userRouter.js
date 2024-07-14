@@ -6,7 +6,7 @@ const userController = new UserController()
 
 userRouter.post("/login", userController.login)
 userRouter.post("/signup", userController.signUp)
-userRouter.get("/Email/:userEmail", userController.isExist)
+// userRouter.get("/Email/:userEmail", userController.isExist)
 
 export{
     userRouter

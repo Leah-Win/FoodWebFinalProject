@@ -3,6 +3,7 @@ import { getQuery, getByIdQuery,postSomeQuery, deleteQuery, putQuery, postQuery,
 
 
 export class OrderService {
+    
     constructor(_tableName, _param = null) {
         this.tableName = "Orders ";
         this.param = _param;
