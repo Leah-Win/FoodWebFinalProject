@@ -1,6 +1,6 @@
 import { executeQuery } from './db.js';
-import { getQuery, getByIdQuery, getByParamQuery, getByParamsQuery, deleteQuery, putQuery, postQuery, limitQuery,insetUserDatails } from './query.js'
-import { create } from '../middleware/authenticateToken.js';
+import { signToken } from "../middleware/token.js";
+import { getQuery, getByIdQuery, getByParamQuery, getByParamsQuery, deleteQuery, putQuery, postQuery, limitQuery } from './query.js'
 
 export class UserService {
     constructor(_tableName, _param = null) {
@@ -9,27 +9,21 @@ export class UserService {
         this.idName = "UserID";
     }
 
-    async getUser() {
-        const query = getQuery(this.tableName);
-        const result = await executeQuery(query);
-        return result;
-    }
-    
     async getUserById(id) {
         const query = getByIdQuery(this.tableName, this.idName);
         const result = await executeQuery(query, [id]);
         return result;
     }
 
-    async  getUserByEmail(params) {
-        const query = getByParamQuery(this.tableName, "Email");
-        const result = await executeQuery(query, [params.userEmail]);
-        return result;
-    }
-    async getUserByParams(params){
-        const query = getByParamsQuery(this.tableName, [Object.keys(params)[0]]);
-        const result = await executeQuery(query, [Object.values(params)[0]]);
-        return result;
+    async getUserByParams(params) {
+        const query = getByParamsQuery(this.tableName, Object.keys(params));
+        const result = await executeQuery(query, Object.values(params));
+        if (result.length > 0) {
+            const token = signToken(result[0].username);
+            return { token: token,data: result[0] };
+        }
+        throw { status: 401, message: "Authentication failed" }
+
     }
 
     async checkIfUserExist(password) {
@@ -37,14 +31,17 @@ export class UserService {
         const result = await executeQuery(query, [Object.values(password)][0]);
         return result;
     }
-   
+
     async addUser(user) {
         const userKeys = Object.keys(user);
         const userValues = Object.values(user);
         const query = postQuery(this.tableName, userKeys);
         const result = await executeQuery(query, userValues);
-        // const token = create(result.insertId);
-        return {result};
+        if (result) {
+            const token = signToken(user.username);
+            return { token: token, id: result.insertId };
+        }
+        throw { status: 409, message: "Conflict occurred" };
     }
 
     async updateUser(user, id) {

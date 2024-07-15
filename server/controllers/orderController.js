@@ -1,5 +1,4 @@
 import { OrderService } from '../service/orderService.js'
-import express from "express";
 
 export class OrderController {
 
@@ -7,7 +6,6 @@ export class OrderController {
         try {
             const service = new OrderService();
             const resultItem = await service.getOrderById(req.params.id);
-            // const resultItem = await service.getOrderById(req.params.id);
             res.status(200).json(resultItem);
         }
         catch (ex) {

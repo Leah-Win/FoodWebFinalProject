@@ -9,11 +9,10 @@ import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Typography from '@mui/joy/Typography';
 import Grid from '@mui/joy/Grid';
-import Link from '@mui/joy/Link';
 import Button from '@mui/joy/Button';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import { Backdrop, Box } from "@mui/material";
+import {  Box } from "@mui/material";
 
 function RestaurantMenu() {
   const { restaurantID } = useParams();
@@ -23,7 +22,7 @@ function RestaurantMenu() {
   const [newItem, setNewItem] = useState(false);
   const [updateItem, setUpdateItem] = useState(false);
   const [isManager, setIsManager] = useState(false);
-  const { register, handleSubmit, reset, formState: { errors }, } = useForm();
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate()
   const [menuDetails, setmenuDetails] = useState(false);
   const location = useLocation();
@@ -50,6 +49,19 @@ function RestaurantMenu() {
     }
 
   }
+
+
+  function logOut() {
+    if (confirm(user.username + ", are you sure you want to log out? ")) {
+      const cookieNames = Object.keys(Cookies.get());
+      cookieNames.forEach(cookieName => {
+          Cookies.remove(cookieName);
+      });
+      setCurrentUser(null);
+      navigate("/login");
+    }
+  }
+
 
   const deleteMenuItem = async (menuItemID) => {
     try {
@@ -98,6 +110,7 @@ function RestaurantMenu() {
         ImageURL: details.imageURL,
         Details: details.details,
       });
+      Object.assign(post.data,{"Quantity": 0})
       setMenu(prevMenu => [...prevMenu, post.data]);
       setCurrentMenu(prevMenu => [...prevMenu, post.data])
       setNewItem(false)
@@ -127,7 +140,6 @@ function RestaurantMenu() {
       copyMenu.push(menu[i]);
     }
     copyMenu = copyMenu.filter(item => item.Quantity != 0)
-    console.log(copyMenu)
     if (copyMenu.length == 0)
       alert("There are no items selected")
     else
@@ -146,13 +158,6 @@ function RestaurantMenu() {
   }
 
 
-  function logOut() {
-    if (confirm(user.username + ", are you sure you want to log out? ")) {
-      localStorage.removeItem("currentUser");
-      setCurrentUser(null);
-      navigate("/login");
-    }
-  }
   return (
 
     <>

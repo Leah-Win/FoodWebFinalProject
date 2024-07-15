@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 import { deleteReq, postReq, getReq, updateReq } from "./fetch";
 import './css/resturants.css'
+import Cookies from 'js-cookie';
 import { UserContext } from './UserProvider'
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
@@ -42,14 +43,20 @@ export default function Restaurant() {
       alert("Unable to enter data, please try again.")
     }
   };
-  
+
   function logOut() {
     if (confirm(user.username + ", are you sure you want to log out? ")) {
-      localStorage.removeItem("currentUser");
+      const cookieNames = Object.keys(Cookies.get());
+      cookieNames.forEach(cookieName => {
+          Cookies.remove(cookieName);
+      });
       setCurrentUser(null);
       navigate("/login");
     }
   }
+
+
+  
   function updateCurrentRestaurant(restaurant) {
     setUpdateRestaurant(true);
     setRestaurantDetails(restaurant);
@@ -115,7 +122,9 @@ export default function Restaurant() {
 
   return (
     <>
-      <h1>{user.username}</h1>
+      <h1>welcome {user.username}!!</h1>
+      <h1>Happy shopping...</h1>
+
       {isManager ? <Button onClick={() => newRestaurant ? setNewRestaurant(false) : setNewRestaurant(true)} variant="outlined" color="neutral" >New Restaurnt</Button> : <></>}
       {
         newRestaurant && <form onSubmit={handleSubmit(addRestaurant)} className="forms">

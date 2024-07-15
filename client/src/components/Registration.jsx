@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 import { UserContext } from './UserProvider'
 import { getByReq, postReq } from "./fetch";
+import Cookies from "js-cookie";
 
 const Register = () => {
 
@@ -33,7 +34,11 @@ const Register = () => {
       }
     },
     email: {
-      required: "Email is required"
+      required: "Email is required",
+      // pattern: {
+      //   value:/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      //   message: 'Please enter a valid email',
+      // }
     },
     phoneNumber: {
       required: "Phone number is required.",
@@ -91,10 +96,8 @@ const Register = () => {
     };
     try {
       const currentUser = await postReq("user/signup", body);
-      // const currentUser = getUser;
-      console.log(currentUser[0],"currentUser");
       setCurrentUser(currentUser);
-      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      Cookies.set("currentUser", JSON.stringify(currentUser));
       navigate(`/user/${userDetails.username}/restaurant`);
     } catch (err) {
       alert("Not successful, please try again.")

@@ -1,6 +1,5 @@
 import express from "express";
 import { OrderController } from '../controllers/orderController.js'
-// import { verifyJWTToken } from "../middleware/authenticateToken.js";
 
 const orderRouter = express.Router();
 const orderController = new OrderController();

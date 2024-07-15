@@ -1,4 +1,5 @@
 import express from "express";
+// import { verifyToken } from "../MiddleWare/verifyToken.js";
 import { UserController } from '../controllers/userController.js'
 const userRouter = express.Router();
 

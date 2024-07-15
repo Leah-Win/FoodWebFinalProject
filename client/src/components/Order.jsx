@@ -52,15 +52,3 @@ useEffect(() => {
     </> 
     )
   }
-
-
-
-
-  
-  // console.log(orderSend+"  "+user.username+"orderSend.Quantity"+copyMenu)
-  //         let post = await postReq("order",{
-  //          UserID: user.userid, 
-  //          TotalAmount: countTotalAmount,
-  //          items: items
-  //          });
-  //          console.log(post)

@@ -1,12 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom'
-import { deleteReq, getByReq, postReq, getReq, updateReq } from "./fetch";
+import { postReq } from "./fetch";
 import { useForm } from "react-hook-form";
 import { UserContext } from './UserProvider'
+import Cookies from "js-cookie";
 
 const Login = () => {
     const navigate = useNavigate();
+
     const { user, setCurrentUser } = useContext(UserContext);
+
     const { register, handleSubmit, reset, } = useForm({ defaultValues: { email: '', password: '' } });
 
     useEffect(() => {
@@ -21,10 +24,12 @@ const Login = () => {
     const onSubmit = async (userDetails) => {
         try {
             const post = await postReq("user/login", { email: userDetails.email, password: userDetails.password })
-            setCurrentUser(post.data[0]);
-            localStorage.setItem("currentUser", JSON.stringify(post.data[0]));
+            const userA = post.data;
+            Cookies.set("currentUser", JSON.stringify(userA));
+            setCurrentUser(userA);
+
             reset();
-            navigate(`/user/${post.data[0].username}/restaurant`);
+            navigate(`/user/${userA.username}/restaurant`);
         } catch (err) {
             alert("Incorrect details");
             reset()

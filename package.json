@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "@paypal/react-paypal-js": "^8.5.0",
-    "ejs": "^3.1.10"
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.10",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2"
   }
 }

@@ -1,13 +1,16 @@
-// let token = document.cookie;
+const URL = "http://localhost:8080"
+
 
 async function postReq(route, body) {
     try {
-        const response = await fetch(`http://localhost:8080/${route}`, {
+        const response = await fetch(`${URL}/${route}`, {
             method: 'POST',
             body: JSON.stringify(body),
-            headers: { 
-                // 'Authorization': token,
-                "Content-type": "application/json; charset=UTF-8", },
+            headers: {
+                'Origin': URL,
+                "Content-type": "application/json; charset=UTF-8",
+            },
+            credentials: 'include'
         })
         const json = await response.json();
         const data = await json;
@@ -21,11 +24,12 @@ async function postReq(route, body) {
 
 async function getByReq(route, id) {
     try {
-        const response = await fetch(`http://localhost:8080/${route}/${id}`, {
+        const response = await fetch(`${URL}/${route}/${id}`, {
             method: 'GET',
-            headers: { 
-                // 'Authorization': token,
-                "Content-type": "application/json; charset=UTF-8", },
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                'Origin': URL,
+            },credentials: 'include'
         })
         const data = await response.json();
         return data;
@@ -39,11 +43,13 @@ async function getByReq(route, id) {
 }
 async function getReq(route) {
     try {
-        const response = await fetch(`http://localhost:8080/${route}`, {
+        const response = await fetch(`${URL}/${route}`, {
             method: 'GET',
-            headers: { 
-                // 'Authorization': token,
-                "Content-type": "application/json; charset=UTF-8", },
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                'Origin': URL,
+            },
+            credentials: 'include'
         })
         const data = await response.json();
         return data;
@@ -54,17 +60,18 @@ async function getReq(route) {
 
     }
 }
-async function updateReq(route,body,id){
+async function updateReq(route, body, id) {
     try {
-        fetch(`http://localhost:8080/${route}/${id}`, {
+        fetch(`${URL}/${route}/${id}`, {
             method: 'PUT',
             body: JSON.stringify(body),
             headers: {
-                // 'Authorization': token,
-              Accept: "application/json",
-              "Content-Type": "application/json",
+                'Origin': URL,
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
-          })
+            credentials: 'include',
+        })
     } catch (error) {
         console.log(err)
         throw err;
@@ -73,11 +80,14 @@ async function updateReq(route,body,id){
 }
 
 
-async function deleteReq(route,id) {
+async function deleteReq(route, id) {
     try {
-        fetch(`http://localhost:8080/${route}/${id}`, {
+        fetch(`${URL}/${route}/${id}`, {
             method: 'DELETE',
-            // headers:{'Authorization': token,}
+            headers: {
+                'Origin': URL,
+                'Content-type': 'application/json; charset=UTF-8'
+            }, credentials: 'include'
         })
     }
     catch (err) {
@@ -87,4 +97,4 @@ async function deleteReq(route,id) {
     }
 }
 
-export { postReq, getReq, getByReq ,deleteReq,updateReq};
+export { postReq, getReq, getByReq, deleteReq, updateReq };

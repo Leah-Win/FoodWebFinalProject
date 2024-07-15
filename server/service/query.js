@@ -1,4 +1,3 @@
-import { query } from "express";
 
 function getQuery(tableName) {
     const query = `SELECT * FROM ${tableName}  WHERE isActive = 1`;
@@ -46,16 +45,7 @@ function limitQuery(tableName) {
     return query;
 }
 
-function insetUserDatails() {
-   //לשנות 
-    let  query = `INSERT INTO users (username, email) VALUES (?,?)`;
-    if(query)
-    {
-         let  query2 = `INSERT INTO Passwords (userID,password) VALUES (${query.insertId}, ?)`;
-    }
-return query
-}
 
 export {
-    getQuery, getByIdQuery, getByParamQuery, postSomeQuery, deleteQuery, postQuery, putQuery, limitQuery, getByParamsQuery, insetUserDatails
+    getQuery, getByIdQuery, getByParamQuery, postSomeQuery, deleteQuery, postQuery, putQuery, limitQuery, getByParamsQuery
 }

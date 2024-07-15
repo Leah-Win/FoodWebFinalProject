@@ -1,5 +1,4 @@
 import { MenuService } from '../service/menuService.js'
-import express from "express";
 
 export class MenuController {
 
