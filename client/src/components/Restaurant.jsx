@@ -19,6 +19,8 @@ export default function Restaurant() {
   const [isManager, setIsManager] = useState(true);
   const [newRestaurant, setNewRestaurant] = useState(false);
   const [restaurantDetails, setRestaurantDetails] = useState(false);
+  const [currentRestaurants, setCurrentRestaurants] = useState([]);
+
   const { user, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate()
   const { register, handleSubmit, reset, formState: { errors }, } = useForm();
@@ -37,6 +39,8 @@ export default function Restaurant() {
     try {
       const data = await getReq("restaurant");
       setRestaurants(data);
+      setCurrentRestaurants(data);
+
       user.isManager ? setIsManager(true) : setIsManager(false);
     }
     catch (err) {
@@ -48,7 +52,7 @@ export default function Restaurant() {
     if (confirm(user.username + ", are you sure you want to log out? ")) {
       const cookieNames = Object.keys(Cookies.get());
       cookieNames.forEach(cookieName => {
-          Cookies.remove(cookieName);
+        Cookies.remove(cookieName);
       });
       setCurrentUser(null);
       navigate("/login");
@@ -56,7 +60,7 @@ export default function Restaurant() {
   }
 
 
-  
+
   function updateCurrentRestaurant(restaurant) {
     setUpdateRestaurant(true);
     setRestaurantDetails(restaurant);
@@ -82,6 +86,7 @@ export default function Restaurant() {
         updatedRestaurants[index] = { ...updatedRestaurants[index], ...body };
       }
       setRestaurants(updatedRestaurants);
+      setCurrentRestaurants(updatedRestaurants)
       setUpdateRestaurant(false);
     }
     catch (err) {
@@ -92,8 +97,8 @@ export default function Restaurant() {
   const deleteRestaurant = async (restaurantID) => {
     try {
       await deleteReq("restaurant", restaurantID)
-      setRestaurants(restaurant => restaurant.filter((item) => item.RestaurantID !== restaurantID)
-      )
+      setRestaurants(restaurant => restaurant.filter((item) => item.RestaurantID !== restaurantID))
+      setCurrentRestaurants(restaurant => restaurant.filter((item) => item.RestaurantID !== restaurantID))
     }
     catch (err) {
       alert("Not successful, please try again.")
@@ -111,19 +116,41 @@ export default function Restaurant() {
         Description: details.description
       });
       setRestaurants(prevRestaurants => [...prevRestaurants, post.data]);
+      setCurrentRestaurants(prevRestaurants => [...prevRestaurants, post.data])
       setNewRestaurant(false)
     }
     catch (err) {
       alert("Not successful, please try again.")
     }
   }
-
-
-
+  const searchByName = (search) => {
+    setRestaurants(currentRestaurants.filter((item) => item.Name.includes(search.name)));
+  }
+  const handleSearch = (e) => {
+    const search=e.target.value;
+    setRestaurants(currentRestaurants.filter((item) => item.Description.includes(search)));
+  }
   return (
     <>
       <h1>welcome {user.username}!!</h1>
       <h1>Happy shopping...</h1>
+      <form onSubmit={handleSubmit(searchByName)} className="forms">
+        <input type="text" placeholder="search by name" {...register("name")} /></form>
+<h3>Select by:</h3>
+<div>
+      <select
+        name="category"
+        id="category"
+        onChange={handleSearch}
+      >
+        <option value="">All</option>
+        <option value="dairy">dairy</option>
+        <option value="sushi">sushi</option>
+        <option value="sandwich">sandwich</option>
+
+      </select>
+      </div>
+      <h3>our resturants</h3>
 
       {isManager ? <Button onClick={() => newRestaurant ? setNewRestaurant(false) : setNewRestaurant(true)} variant="outlined" color="neutral" >New Restaurnt</Button> : <></>}
       {
@@ -177,6 +204,8 @@ export default function Restaurant() {
               <CardContent>
                 <Typography level="title-md">{restaurant.Name}</Typography>
                 <Typography level="body-sm">{restaurant.Address}</Typography>
+                <Typography level="body-sm">{restaurant.Description}</Typography>
+
               </CardContent>
               <CardOverflow variant="soft" sx={{ bgcolor: 'background.level1' }}>
               </CardOverflow>

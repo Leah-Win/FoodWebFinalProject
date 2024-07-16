@@ -7,12 +7,13 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
+import Cookies from 'js-cookie';
 import Typography from '@mui/joy/Typography';
 import Grid from '@mui/joy/Grid';
 import Button from '@mui/joy/Button';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import {  Box } from "@mui/material";
+import { Box } from "@mui/material";
 
 function RestaurantMenu() {
   const { restaurantID } = useParams();
@@ -55,7 +56,7 @@ function RestaurantMenu() {
     if (confirm(user.username + ", are you sure you want to log out? ")) {
       const cookieNames = Object.keys(Cookies.get());
       cookieNames.forEach(cookieName => {
-          Cookies.remove(cookieName);
+        Cookies.remove(cookieName);
       });
       setCurrentUser(null);
       navigate("/login");
@@ -110,7 +111,7 @@ function RestaurantMenu() {
         ImageURL: details.imageURL,
         Details: details.details,
       });
-      Object.assign(post.data,{"Quantity": 0})
+      Object.assign(post.data, { "Quantity": 0 })
       setMenu(prevMenu => [...prevMenu, post.data]);
       setCurrentMenu(prevMenu => [...prevMenu, post.data])
       setNewItem(false)
@@ -156,7 +157,15 @@ function RestaurantMenu() {
     })
     )
   }
+  const sortByPrice = () => {
+    setMenu(menu => menu.sort(
+      (p1, p2) => (p1.Price > p2.Price) ? 1 : (p1.Price < p2.Price) ? -1 : 0));
+    setCurrentMenu(menu);
+  }
 
+  const searchByName = (search) => {
+    setMenu(currentMenu.filter((item) => item.Name.includes(search.name)));
+  }
 
   return (
 
@@ -172,6 +181,9 @@ function RestaurantMenu() {
           </CardContent>
         </Box>
       </AspectRatio>
+      <Button onClick={sortByPrice}>sort by price</Button>
+      <form onSubmit={handleSubmit(searchByName)} className="forms">
+        <input type="text" placeholder="search by name" {...register("name")} /></form>
 
       {isManager ? <Button onClick={() => newItem ? setNewItem(false) : setNewItem(true)} variant="outlined" color="neutral" >New Item</Button> : <></>}
       {newItem && <form onSubmit={handleSubmit(addItem)} className="forms">

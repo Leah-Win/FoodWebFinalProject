@@ -22,6 +22,6 @@ export const verifyToken = (req, res, next) => {
 export const signToken = (username) => {
     return jwt.sign({ id: username }, secretKey, {
         issuer: issuer,
-        expiresIn: "20m",
+        expiresIn: "30m",
     })
 }
